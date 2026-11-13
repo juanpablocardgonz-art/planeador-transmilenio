@@ -1,0 +1,239 @@
+<!doctype html>
+<!--
+  frontend/estatico/index.html
+  Interfaz de la app. Solo muestra datos y llama a la API (/api/...) del
+  servidor, que a su vez llama al motor. Aquí NO hay reglas del sistema.
+  Cada sección tiene un recuadro "Bajo el capó" con la estructura de datos,
+  el algoritmo y la complejidad que usa el motor (útil para la sustentación).
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planeador TransMilenio</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="marca">
+      <span class="logo" aria-hidden="true">TM</span>
+      <div>
+        <h1>Planeador TransMilenio</h1>
+        <p class="sub">Estructuras de Datos y Algoritmos · motor propio en Python</p>
+      </div>
+    </div>
+    <div class="estado-red" id="estado-red">Cargando red…</div>
+  </header>
+
+  <!-- Pestañas: una por grupo de requisitos -->
+  <nav class="pestanas" role="tablist">
+    <button class="pestana activa" data-panel="estaciones">Estaciones <small>R1–R3</small></button>
+    <button class="pestana" data-panel="viajar">Viajar <small>R4–R5</small></button>
+    <button class="pestana" data-panel="ranking">Ranking <small>R6</small></button>
+    <button class="pestana" data-panel="operar">Operar la red <small>R7–R9</small></button>
+    <button class="pestana" data-panel="fila">Fila de abordaje <small>R10</small></button>
+    <button class="pestana" data-panel="rendimiento">Rendimiento <small>R11</small></button>
+  </nav>
+
+  <main>
+    <!-- =================================================== ESTACIONES -->
+    <section class="panel activo" id="panel-estaciones">
+      <div class="rejilla">
+        <article class="tarjeta">
+          <h2><span class="req">R1</span> Buscar una estación</h2>
+          <form id="form-estado" class="fila-form">
+            <input id="in-estado" list="lista-estaciones" placeholder="Nombre exacto, ej. RICAURTE" autocomplete="off">
+            <button>Buscar</button>
+          </form>
+          <div id="out-estado" class="salida"></div>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p><b>Tabla hash propia</b> con encadenamiento (<code>motor/tabla_hash.py</code>): nombre → estación.
+            Función hash polinomial, rehash al superar factor de carga 0.75.</p>
+            <p>Complejidad: <b>O(1)</b> promedio. Alternativa descartada: búsqueda binaria O(log n).</p>
+          </details>
+        </article>
+
+        <article class="tarjeta">
+          <h2><span class="req">R2</span> Autocompletar</h2>
+          <div class="fila-form">
+            <input id="in-auto" placeholder="Escribe, ej. CAL" autocomplete="off">
+            <label class="k">k <input id="in-auto-k" type="number" value="8" min="1" max="50"></label>
+          </div>
+          <ul id="out-auto" class="chips"></ul>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p><b>Árbol AVL</b> con los nombres de las estaciones <i>abiertas</i> (<code>motor/avl.py</code>).
+            Bajamos hasta el primer nombre ≥ prefijo y recorremos en orden con una pila hasta juntar k o salir del prefijo.</p>
+            <p>Complejidad: <b>O(log n + k)</b>. Alternativa: Trie (no sirve para rango ni ranking).</p>
+          </details>
+        </article>
+
+        <article class="tarjeta ancha">
+          <h2><span class="req">R3</span> Listar un rango</h2>
+          <form id="form-rango" class="fila-form">
+            <input id="in-desde" list="lista-estaciones" placeholder="Desde, ej. CALLE 26">
+            <input id="in-hasta" list="lista-estaciones" placeholder="Hasta, ej. CALLE 80">
+            <button>Listar</button>
+          </form>
+          <ul id="out-rango" class="chips"></ul>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p>El mismo <b>AVL</b>: recorrido en orden que empieza en <i>desde</i> y se detiene al pasar <i>hasta</i>.
+            Las estaciones cerradas no están en el árbol, así que nunca aparecen.</p>
+            <p>Complejidad: <b>O(log n + r)</b>, r = estaciones devueltas.</p>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================= VIAJAR -->
+    <section class="panel" id="panel-viajar">
+      <div class="rejilla">
+        <article class="tarjeta">
+          <h2><span class="req">R4</span> Próximo bus</h2>
+          <form id="form-bus" class="columna-form">
+            <input id="in-bus-est" list="lista-estaciones" placeholder="Estación" autocomplete="off">
+            <select id="in-bus-ruta"><option value="">Elige primero la estación</option></select>
+            <input id="in-bus-hora" type="time" value="07:00">
+            <button>Consultar</button>
+          </form>
+          <div id="out-bus" class="salida"></div>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p>Hash (ruta → parada) y <b>búsqueda binaria</b> (lower bound) sobre el arreglo de horas de esa parada,
+            que se ordenó con <b>Merge Sort</b> al cargar (<code>motor/ordenamiento.py</code>).</p>
+            <p>Complejidad: <b>O(log h)</b>, h = buses de esa ruta en esa estación.</p>
+          </details>
+        </article>
+
+        <article class="tarjeta">
+          <h2><span class="req">R5</span> Planear un viaje</h2>
+          <form id="form-viaje" class="columna-form">
+            <input id="in-origen" list="lista-estaciones" placeholder="Origen, ej. PORTAL NORTE" autocomplete="off">
+            <input id="in-destino" list="lista-estaciones" placeholder="Destino, ej. PORTAL SUR" autocomplete="off">
+            <button>Planear</button>
+          </form>
+          <div id="out-viaje" class="salida"></div>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p><b>Grafo</b> estación ↔ ruta. Dos barridos (<code>motor/planificador.py</code>): hacia atrás desde el destino
+            anotando cada posible transbordo, y hacia adelante desde el origen buscando el destino o una estación anotada.
+            Arreglos indexados por id con <b>marcas de versión</b> para no reiniciarlos.</p>
+            <p>Complejidad: <b>O(L<sub>origen</sub> + L<sub>destino</sub>)</b>, L = largo de las rutas que pasan por ahí.</p>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================================================== RANKING -->
+    <section class="panel" id="panel-ranking">
+      <article class="tarjeta">
+        <h2><span class="req">R6</span> Estaciones con más buses al día</h2>
+        <div class="fila-form">
+          <label class="k">k <input id="in-rank-k" type="number" value="15" min="1" max="200"></label>
+          <button id="btn-rank">Actualizar</button>
+        </div>
+        <div id="out-rank" class="barras"></div>
+        <details class="capo"><summary>Bajo el capó</summary>
+          <p><b>AVL</b> con clave <code>(-buses, nombre)</code>: al negar los buses, el recorrido en orden da primero las de más buses
+          y desempata alfabéticamente. Solo se actualiza cuando algo cambia (cerrar, reabrir, editar una ruta): <b>O(log n)</b>.</p>
+          <p>Consulta: <b>O(log n + k)</b>. Alternativa descartada: ordenar todo en cada consulta, O(n log n).</p>
+        </details>
+      </article>
+    </section>
+
+    <!-- ======================================================= OPERAR -->
+    <section class="panel" id="panel-operar">
+      <div class="historial">
+        <button id="btn-deshacer">↶ Deshacer <span id="n-deshacer">0</span></button>
+        <button id="btn-rehacer">Rehacer <span id="n-rehacer">0</span> ↷</button>
+        <span id="out-historial" class="aviso"></span>
+      </div>
+      <div class="rejilla">
+        <article class="tarjeta ancha">
+          <h2><span class="req">R7</span> Editar rutas</h2>
+          <div class="fila-form">
+            <input id="in-ruta" list="lista-rutas" placeholder="Ruta, ej. 1-1" autocomplete="off">
+            <label class="check"><input type="checkbox" id="in-reves"> al revés</label>
+            <button id="btn-ver-ruta">Ver recorrido</button>
+          </div>
+          <ol id="out-recorrido" class="recorrido"></ol>
+          <form id="form-agregar" class="fila-form">
+            <input id="in-nueva" list="lista-estaciones" placeholder="Estación nueva">
+            <input id="in-despues" list="lista-estaciones" placeholder="Después de (vacío = al inicio)">
+            <button>Agregar parada</button>
+          </form>
+          <p class="nota">Para quitar una parada, haz clic en ella dentro del recorrido.</p>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p><b>Lista doblemente enlazada</b> de paradas + <b>tabla hash</b> estación → nodo en cada ruta (<code>motor/lista_doble.py</code>).
+            Insertar o quitar: <b>O(1)</b> (+ O(log n) para el ranking). Recorrer en cualquier sentido: <b>O(L)</b>.</p>
+          </details>
+        </article>
+
+        <article class="tarjeta">
+          <h2><span class="req">R8</span> Cerrar y reabrir</h2>
+          <form id="form-cerrar" class="columna-form">
+            <input id="in-cerrar" list="lista-estaciones" placeholder="Estación" autocomplete="off">
+            <div class="botones">
+              <button type="button" id="btn-cerrar" class="peligro">Cerrar</button>
+              <button type="button" id="btn-reabrir">Reabrir</button>
+            </div>
+          </form>
+          <div id="out-cerrar" class="salida"></div>
+          <details class="capo"><summary>Bajo el capó</summary>
+            <p>Cerrar = sacar la estación de los dos AVL (nombres y ranking) y marcarla cerrada; el planificador la salta.
+            Un solo método interno actualiza todas las estructuras: <b>O(log n)</b>.</p>
+          </details>
+        </article>
+
+        <article class="tarjeta">
+          <h2><span class="req">R9</span> Deshacer y rehacer</h2>
+          <p>Cada cambio es un <b>comando</b> que sabe aplicarse y revertirse, guardado en <b>dos pilas</b> (LIFO).
+          Un cambio nuevo vacía la pila de rehacer.</p>
+          <details class="capo" open><summary>Bajo el capó</summary>
+            <p><code>motor/historial.py</code> — patrón Command. Apilar/desapilar O(1) + el costo de la operación revertida.</p>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================================= FILA -->
+    <section class="panel" id="panel-fila">
+      <article class="tarjeta">
+        <h2><span class="req">R10</span> Simular hora pico</h2>
+        <form id="form-fila" class="parametros">
+          <label>Pasajeros <input id="in-pasajeros" type="number" value="30000" min="1" max="1000000"></label>
+          <label>Duración (min) <input id="in-minutos" type="number" value="120" min="10"></label>
+          <label>Frecuencia (min) <input id="in-frecuencia" type="number" value="1" min="1"></label>
+          <label>Capacidad <input id="in-capacidad" type="number" value="250" min="1"></label>
+          <button>Simular</button>
+        </form>
+        <div id="out-fila-stats" class="kpis"></div>
+        <canvas id="graf-fila" height="260"></canvas>
+        <details class="capo"><summary>Bajo el capó</summary>
+          <p><b>Cola FIFO</b> sobre arreglo con índice de frente (<code>motor/pila_cola.py</code>, <code>motor/simulacion.py</code>).
+          Por cada bus: entran a la cola los que ya llegaron y suben hasta llenar la capacidad.</p>
+          <p>Complejidad: <b>O(P + B)</b>. Con <code>list.pop(0)</code> sería O(P²).</p>
+        </details>
+      </article>
+    </section>
+
+    <!-- ================================================== RENDIMIENTO -->
+    <section class="panel" id="panel-rendimiento">
+      <article class="tarjeta">
+        <h2><span class="req">R11</span> Panel de rendimiento</h2>
+        <p>Cada operación se mide con la red real (n) y con copias de 2n, 4n y 8n. Si al duplicar n el tiempo crece
+        como dice la complejidad esperada, la decisión fue correcta.</p>
+        <div class="fila-form">
+          <button id="btn-medir">Volver a medir (≈15 s)</button>
+          <span id="out-medir" class="aviso"></span>
+        </div>
+        <div id="out-rendimiento"></div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Listas para los autocompletados nativos del navegador -->
+  <datalist id="lista-estaciones"></datalist>
+  <datalist id="lista-rutas"></datalist>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
