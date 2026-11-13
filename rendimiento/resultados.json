@@ -1,0 +1,407 @@
+{
+  "fecha": "2026-11-13 17:11",
+  "factores": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "estaciones": [
+    147,
+    294,
+    588,
+    1176
+  ],
+  "operaciones": [
+    {
+      "clave": "carga",
+      "requisito": "Carga",
+      "esperado": "O(n)",
+      "que_es_n": "n = filas de los CSV",
+      "explicacion": "Lee cada fila una vez; Merge Sort solo ordena las horas de un mismo par (ruta, estación), cuyo tamaño no crece con la red.",
+      "tiempos_us": [
+        468356.4500001012,
+        1026852.4340001477,
+        2181227.885999988,
+        4676743.88499995
+      ],
+      "razones": [
+        2.1924592561924277,
+        2.1241882609197518,
+        2.144087701710218
+      ],
+      "razones_esperadas": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "razon_medida": 2.1535784062741326,
+      "razon_esperada": 2.0,
+      "coincide": true
+    },
+    {
+      "clave": "estado",
+      "requisito": "R1",
+      "esperado": "O(1)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Tabla hash propia. Puede subir un poco por efectos de caché de memoria al crecer la tabla.",
+      "tiempos_us": [
+        1.262061999909747,
+        1.433374000043841,
+        1.674978499977442,
+        2.8555234999885215
+      ],
+      "razones": [
+        1.1357397656742259,
+        1.1685564967176822,
+        1.7048120319317404
+      ],
+      "razones_esperadas": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "razon_medida": 1.3363694314412162,
+      "razon_esperada": 1.0,
+      "coincide": true
+    },
+    {
+      "clave": "autocompletar",
+      "requisito": "R2",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones abiertas (k = 10)",
+      "explicacion": "AVL: bajar O(log n) + recorrer k. La parte k es constante.",
+      "tiempos_us": [
+        1.3916139999992083,
+        1.7028025000627167,
+        2.1189639999192877,
+        4.617160500060891
+      ],
+      "razones": [
+        1.2236169656698521,
+        1.2443979849931177,
+        2.1789707141021557
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.548995221588375,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "rango",
+      "requisito": "R3",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones abiertas (rango de 1 resultado)",
+      "explicacion": "AVL: O(log n + r). Medimos con r = 1 para aislar el log n.",
+      "tiempos_us": [
+        0.9696294999912424,
+        1.0522124999852167,
+        1.4639899999338013,
+        1.9402914999773202
+      ],
+      "razones": [
+        1.0851696446887396,
+        1.3913444289574302,
+        1.3253447769896354
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.2672862835452683,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "proximo_bus",
+      "requisito": "R4",
+      "esperado": "O(1)",
+      "que_es_n": "n = estaciones (h = horas por parada, fijo)",
+      "explicacion": "Hash O(1) + búsqueda binaria O(log h). h no cambia al duplicar la red.",
+      "tiempos_us": [
+        5.559010499951,
+        6.387010000025839,
+        9.886756500009142,
+        8.645982499956517
+      ],
+      "razones": [
+        1.1489472811900854,
+        1.547947552918994,
+        0.8745014100376117
+      ],
+      "razones_esperadas": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "razon_medida": 1.1904654147155638,
+      "razon_esperada": 1.0,
+      "coincide": true
+    },
+    {
+      "clave": "viaje",
+      "requisito": "R5",
+      "esperado": "O(1)",
+      "que_es_n": "L = largo de rutas del origen y destino (fijo)",
+      "explicacion": "R5 está excluido de la prueba de rendimiento. Depende del largo de las rutas, no de n.",
+      "tiempos_us": [
+        73.09058200007712,
+        86.95003999991968,
+        85.13006600014705,
+        130.51292399995873
+      ],
+      "razones": [
+        1.189620298820824,
+        0.9790687387863846,
+        1.5331002327630439
+      ],
+      "razones_esperadas": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "razon_medida": 1.233929756790084,
+      "razon_esperada": 1.0,
+      "coincide": true
+    },
+    {
+      "clave": "ranking",
+      "requisito": "R6",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones abiertas (k = 10)",
+      "explicacion": "AVL con clave (-buses, nombre): O(log n + k).",
+      "tiempos_us": [
+        2.03960649992041,
+        1.940326999942954,
+        1.9691869999860503,
+        2.0429115000979436
+      ],
+      "razones": [
+        0.9513241892584035,
+        1.0148737816068862,
+        1.0374390548548287
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.001212341906706,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "agregar_parada",
+      "requisito": "R7",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Lista enlazada + hash O(1); actualizar el ranking (AVL) es O(log n).",
+      "tiempos_us": [
+        17.44523636289435,
+        21.652435529786533,
+        25.09633521115152,
+        42.157986731943346
+      ],
+      "razones": [
+        1.2411660741863497,
+        1.1590536859757568,
+        1.6798463352215072
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.3600220317945377,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "quitar_parada",
+      "requisito": "R7",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Igual que agregar: O(1) en la ruta + O(log n) en el ranking.",
+      "tiempos_us": [
+        11.300381216260675,
+        14.241345303986307,
+        15.900906077116897,
+        16.188597375701857
+      ],
+      "razones": [
+        1.2602535287476615,
+        1.1165311800048876,
+        1.018092761330059
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.1316258233608694,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "recorrido",
+      "requisito": "R7",
+      "esperado": "O(1)",
+      "que_es_n": "L = paradas de la ruta (fijo)",
+      "explicacion": "Es O(L): recorre la lista enlazada. L no crece al duplicar la red.",
+      "tiempos_us": [
+        1.2668895023582776,
+        1.7110331487323824,
+        2.1892071821795316,
+        2.4302444750916563
+      ],
+      "razones": [
+        1.350578046110055,
+        1.279465090317744,
+        1.11010254985193
+      ],
+      "razones_esperadas": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "razon_medida": 1.2467152287599097,
+      "razon_esperada": 1.0,
+      "coincide": true
+    },
+    {
+      "clave": "cerrar",
+      "requisito": "R8",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Borra de dos AVL: O(log n).",
+      "tiempos_us": [
+        6.068469387866485,
+        7.3727006800712305,
+        8.09503571416189,
+        9.017914965905058
+      ],
+      "razones": [
+        1.2149193163621246,
+        1.0979742790919433,
+        1.1140055812389604
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.1422997255643428,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "reabrir",
+      "requisito": "R8",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Inserta en dos AVL: O(log n).",
+      "tiempos_us": [
+        6.91325170096423,
+        7.416775510242265,
+        8.380899659756187,
+        10.20196853728583
+      ],
+      "razones": [
+        1.0728345836457547,
+        1.1299923596423413,
+        1.2172879943037789
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.140038312530625,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "deshacer",
+      "requisito": "R9",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Pila O(1) + revertir el cambio (aquí, un cierre: O(log n)).",
+      "tiempos_us": [
+        5.17906802725229,
+        5.861993197707424,
+        6.835372449218301,
+        8.045629251845249
+      ],
+      "razones": [
+        1.131862560379894,
+        1.1660491949890965,
+        1.1770579162464443
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.1583232238718117,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "rehacer",
+      "requisito": "R9",
+      "esperado": "O(log n)",
+      "que_es_n": "n = estaciones",
+      "explicacion": "Pila O(1) + volver a aplicar el cambio.",
+      "tiempos_us": [
+        4.42593877592952,
+        5.159530611636495,
+        5.850081632603537,
+        6.367828231394596
+      ],
+      "razones": [
+        1.1657483017380665,
+        1.1338398922199655,
+        1.088502457111977
+      ],
+      "razones_esperadas": [
+        1.1388952096850913,
+        1.1219560926272545,
+        1.1086995234739294
+      ],
+      "razon_medida": 1.1293635503566697,
+      "razon_esperada": 1.123183608595425,
+      "coincide": true
+    },
+    {
+      "clave": "simular_fila",
+      "requisito": "R10",
+      "esperado": "O(n)",
+      "que_es_n": "n = pasajeros",
+      "explicacion": "Cada pasajero entra y sale de la cola una sola vez: O(n).",
+      "tiempos_us": [
+        14279.558999987785,
+        31716.594000045006,
+        64779.999999927895,
+        130186.95400000979
+      ],
+      "razones": [
+        2.2211185933733764,
+        2.0424639543526006,
+        2.009678203151508
+      ],
+      "razones_esperadas": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "razon_medida": 2.0910869169591617,
+      "razon_esperada": 2.0,
+      "coincide": true
+    }
+  ]
+}
