@@ -1,5 +1,11 @@
 # Pruebas
 
-Agregar pruebas funcionales para cada requisito y casos límite. Las pruebas de rendimiento deben medir tamaños de red crecientes y registrar tanto el resultado como el tiempo; no reemplazan las pruebas de corrección.
+```bash
+python -m unittest discover -s pruebas -v
+```
 
-Se puede empezar con `unittest`, incluido en Python, mientras el grupo no acuerde otra herramienta permitida.
+- `test_motor.py`: R1–R10 sobre `red_mini/` (respuestas calculables a mano) y carga de la red real.
+- `test_restricciones.py`: revisa con `ast` que `motor/` no use nada prohibido.
+- `test_conversion.py`: el script GTFS → CSV con un GTFS de ejemplo.
+
+El rendimiento (R11) está en `rendimiento/`.
