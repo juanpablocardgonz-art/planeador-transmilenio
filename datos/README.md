@@ -1,9 +1,12 @@
 # Datos de entrada
 
-El motor debe leer los archivos CSV definidos por el enunciado:
+Los tres CSV que lee el motor, generados desde el GTFS de TransMilenio (julio 2021):
 
-- `estaciones.csv`
-- `rutas.csv`
-- `horarios.csv`
+| Archivo | Columnas | Filas |
+|---|---|---|
+| `estaciones.csv` | `nombre` | 147 |
+| `rutas.csv` | `ruta, orden, estacion` | 1.927 (181 rutas) |
+| `horarios.csv` | `ruta, estacion, hora` | 140.492 (1.580 repetidas, que el motor descarta) |
 
-Coloquen aquí los archivos acordados por el grupo y documenten su origen y formato. No inventen columnas: validen los encabezados contra el enunciado antes de implementar el cargador.
+Nombres en mayúsculas, sin tildes, sin repetidos; cada ruta va en un solo sentido; horas `HH:MM`.
+Para regenerarlos: `python conversion/convertir_gtfs.py gtfs.zip datos/`.
