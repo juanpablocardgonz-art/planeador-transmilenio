@@ -57,7 +57,7 @@ Hagan cada uno sin mirar la solución y corran `python -m unittest discover -s p
 ## 5. Antes de la entrega
 
 - [ ] `integrantes.md` con los usuarios de GitHub y qué requisito hizo cada uno.
-- [ ] Commits de **todos** a lo largo del proyecto (el historial vale 5 puntos).
+- [ ] Commits de **todos** a lo largo del proyecto (el historial vale 5 puntos). ⚠️ Hoy casi todos los commits tienen el mismo autor: cada integrante debe hacer sus propios commits reales, desde su cuenta de GitHub, sobre trabajo que entienda y pueda explicar.
 - [ ] El repositorio público (o con acceso de lectura para el profesor) y el trabajo integrado en `main`.
 - [ ] Último commit antes del 21 de noviembre de 2026, 23:59.
 - [ ] Correr `convertir_gtfs.py` con el zip real y comparar con `datos/`.
