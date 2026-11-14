@@ -18,6 +18,18 @@ python -m rendimiento.medir                     # mide el rendimiento y guarda r
 python conversion/convertir_gtfs.py gtfs.zip datos/   # regenerar los CSV desde el GTFS
 ```
 
+## Cómo usar la app
+
+La interfaz está organizada por **quién la usa**, no por número de requisito. Cinco pantallas, con navegación arriba en escritorio y abajo en celular:
+
+- **Viajar** — cualquier pasajero. Origen/destino con autocompletado (R2) y el viaje (R5) como una línea de tiempo con el próximo bus de cada tramo (R4).
+- **Estaciones** — buscar una estación (R1) con su ficha de rutas, explorar de A a Z (R3) o ver las más concurridas (R6).
+- **Operar la red** — para operadores: diagrama de la ruta tipo metro para agregar/quitar paradas (R7), cerrar/reabrir estaciones (R8) y deshacer/rehacer (R9).
+- **Hora pico** — simula la fila de abordaje (R10) con sliders y una gráfica.
+- **Cómo funciona** — el panel de rendimiento (R11) y un mapa "requisito → dónde está en la app".
+
+El interruptor **"Modo explicación"** (arriba, junto al estado de la red) revela en cada pantalla una tarjeta "Bajo el capó" con la estructura de datos, el algoritmo y la complejidad de ese requisito — la misma información de la tabla de R12 más abajo, repartida donde ocurre cada requisito. Ver también [frontend/README.md](./frontend/README.md).
+
 ## Estructura del repositorio
 
 ```text
