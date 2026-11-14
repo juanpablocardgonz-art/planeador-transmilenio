@@ -161,7 +161,51 @@
 
     <!-- ============================================ C. OPERAR LA RED -->
     <section class="panel" id="panel-operar">
-      <p class="cargando">Cargando…</p>
+      <div class="barra-historial">
+        <button type="button" id="btn-deshacer" disabled>↶ <span id="texto-deshacer">Deshacer</span></button>
+        <button type="button" id="btn-rehacer" disabled><span id="texto-rehacer">Rehacer</span> ↷</button>
+      </div>
+
+      <div class="operar-controles">
+        <div class="campo-auto">
+          <label for="in-ruta-operar">Ruta</label>
+          <input id="in-ruta-operar" list="lista-rutas" placeholder="Ej. 1-1">
+        </div>
+        <div class="segmentado" role="radiogroup" aria-label="Sentido del recorrido">
+          <button type="button" class="segmento activo" data-sentido="normal">Normal</button>
+          <button type="button" class="segmento" data-sentido="reves">Al revés</button>
+        </div>
+        <button type="button" id="btn-ver-ruta">Ver recorrido</button>
+      </div>
+
+      <div class="diagrama-contenedor">
+        <ol id="diagrama-ruta" class="diagrama-ruta">
+          <li class="vacio-diagrama">Elige una ruta para ver su recorrido.</li>
+        </ol>
+      </div>
+
+      <div id="popover-insertar" class="popover-insertar" hidden>
+        <div>
+          <p id="texto-insertar" class="tenue" style="margin:0 0 6px"></p>
+          <div class="campo-auto">
+            <label for="in-nueva-parada">Nombre de la estación</label>
+            <input id="in-nueva-parada" placeholder="Ej. MODELIA">
+          </div>
+        </div>
+        <button type="button" id="btn-confirmar-insertar" class="boton-primario">Agregar parada</button>
+        <button type="button" id="btn-cancelar-insertar">Cancelar</button>
+      </div>
+
+      <div id="ficha-parada-operar"></div>
+
+      <details class="capo"><summary>Bajo el capó — R7, R8 y R9</summary>
+        <p><b>R7.</b> Cada ruta es una <b>lista doblemente enlazada</b> de paradas + una <b>tabla hash</b> estación → nodo
+        (<code>motor/lista_doble.py</code>). Insertar o quitar es <b>O(1)</b> (+ O(log n) para actualizar el ranking).</p>
+        <p><b>R8.</b> Cerrar saca la estación de los dos AVL (nombres y ranking); reabrir la vuelve a meter: <b>O(log n)</b>.
+        El planificador de viajes salta las estaciones cerradas.</p>
+        <p><b>R9.</b> Patrón <b>Command</b> con dos pilas (<code>motor/historial.py</code>). Un truco de la lista enlazada
+        hace que deshacer una parada sea O(1): al desenlazar un nodo no se borran sus punteros.</p>
+      </details>
     </section>
 
     <!-- ================================================ D. HORA PICO -->
