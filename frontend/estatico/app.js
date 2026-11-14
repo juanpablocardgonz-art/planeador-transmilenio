@@ -262,7 +262,7 @@ async function cargarRendimiento() {
 }
 $("btn-medir").addEventListener("click", async () => {
   $("btn-medir").disabled = true;
-  $("out-medir").textContent = "Midiendo con redes de n, 2n, 4n y 8n…";
+  $("out-medir").textContent = "Generando redes de 10.000, 20.000, 40.000 y 80.000 estaciones y midiendo (≈1 min)…";
   const r = await operar("medir");
   $("btn-medir").disabled = false;
   $("out-medir").textContent = r.error ? r.error : `Medición del ${r.fecha}`;
@@ -273,13 +273,14 @@ function pintarRendimiento(r) {
   const filas = r.operaciones.map((op) => `
     <tr><td><b>${op.clave}</b></td><td>${op.requisito}</td><td>${op.esperado}<div class="tenue">${esc(op.que_es_n)}</div></td>
       ${op.tiempos_us.map((t) => `<td class="num">${t >= 1e5 ? fmt(t / 1000) + " ms" : fmt(t, t < 10 ? 2 : 1) + " µs"}</td>`).join("")}
-      <td class="num">×${fmt(op.razon_medida, 2)}</td><td class="num">×${fmt(op.razon_esperada, 2)}</td>
+      <td class="num">${fmt(op.pendiente_medida, 2)}</td><td class="num">${fmt(op.pendiente_esperada, 2)}</td>
       <td><span class="etiqueta ${op.coincide ? "ok" : "mal"}">${op.coincide ? "Coincide" : "No coincide"}</span></td></tr>`).join("");
   $("out-rendimiento").innerHTML = `
     <p class="tenue">Medición del ${r.fecha}. Estaciones por red: ${r.estaciones.map((x) => fmt(x)).join(" → ")}.
-      «Razón» = tiempo(2n) / tiempo(n), promedio de cada duplicación.</p>
+      Cada tiempo es la mediana de ${r.repeticiones} repeticiones de ${fmt(r.consultas)} consultas.
+      «Pendiente» = inclinación de log(tiempo) contra log(n): 0 es plano (O(1), O(log n)), 1 es lineal (O(n)).</p>
     <div class="tabla-scroll"><table class="tabla-rend"><thead><tr><th>Operación</th><th>Req</th><th>Esperado</th>
-      ${r.factores.map((f) => `<th>${f === 1 ? "n" : f + "n"}</th>`).join("")}<th>Razón medida</th><th>Esperada</th><th></th></tr></thead>
+      ${r.estaciones.map((n) => `<th class="num">${fmt(n)}</th>`).join("")}<th>Pendiente medida</th><th>Esperada</th><th></th></tr></thead>
       <tbody>${filas}</tbody></table></div>
     <div class="leyenda"><span><i style="background:${color("--acento")}"></i>medido</span>
       <span><i style="background:${color("--tenue")}"></i>esperado (escalado al primer punto)</span></div>
@@ -287,21 +288,22 @@ function pintarRendimiento(r) {
       <div class="mini"><h3><span>${op.clave} <span class="tenue">${op.requisito}</span></span>
         <span class="etiqueta ${op.coincide ? "ok" : "mal"}">${op.esperado}</span></h3>
         <canvas id="mini-${i}" height="110"></canvas><p>${esc(op.explicacion)}</p></div>`).join("")}</div>`;
-  r.operaciones.forEach((op, i) => dibujarMini($(`mini-${i}`), r.factores, op));
+  r.operaciones.forEach((op, i) => dibujarMini($(`mini-${i}`), r.estaciones, op));
 }
 
 // Mini gráfica: tiempo medido vs. curva esperada escalada al primer punto.
 const FUNCIONES = {
   "O(1)": () => 1, "O(log n)": (n) => Math.log2(n), "O(n)": (n) => n, "O(n log n)": (n) => n * Math.log2(n),
 };
-function dibujarMini(c, factores, op) {
+function dibujarMini(c, tamanos, op) {
   const { ctx, w, h } = prepararCanvas(c);
   const m = { i: 8, d: 8, a: 10, b: 10 };
-  const base = 1000; // tamaño de referencia (solo importa la forma de la curva)
-  const f = FUNCIONES[op.esperado];
-  const esperado = factores.map((x) => (op.tiempos_us[0] * f(base * x)) / f(base));
+  // Curva esperada: t(n) = t(primera red) * f(n) / f(primera n).
+  // En R4 el n real (horas por parada) no crece con la red: se espera plana.
+  const f = op.clave === "proximo_bus" ? FUNCIONES["O(1)"] : FUNCIONES[op.esperado];
+  const esperado = tamanos.map((n) => (op.tiempos_us[0] * f(n)) / f(tamanos[0]));
   const tope = Math.max(...op.tiempos_us, ...esperado) * 1.1;
-  const X = (i) => m.i + ((w - m.i - m.d) * i) / (factores.length - 1);
+  const X = (i) => m.i + ((w - m.i - m.d) * i) / (tamanos.length - 1);
   const Y = (v) => h - m.b - ((h - m.a - m.b) * v) / tope;
   ejes(ctx, w, h, m);
   [[esperado, color("--tenue"), [4, 4]], [op.tiempos_us, color("--acento"), []]].forEach(([serie, col, guion]) => {
