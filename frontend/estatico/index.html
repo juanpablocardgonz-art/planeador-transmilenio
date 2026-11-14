@@ -248,7 +248,42 @@
 
     <!-- =========================================== E. CÓMO FUNCIONA -->
     <section class="panel" id="panel-comofunciona">
-      <p class="cargando">Cargando…</p>
+      <article class="tarjeta">
+        <h1><span class="req">R11</span> Panel de rendimiento</h1>
+        <p>Cada operación se mide con la red real (n) y con copias de 2n, 4n y 8n. Si al duplicar n el tiempo crece
+        como dice la complejidad esperada, la decisión fue correcta. R5 (planear un viaje) queda excluido: no depende
+        de n, sino del largo de las rutas que pasan por el origen y el destino.</p>
+        <div class="fila-form">
+          <button type="button" id="btn-medir">Volver a medir (≈15 s)</button>
+          <span id="out-medir" class="aviso-medir"></span>
+        </div>
+        <div id="out-rendimiento"></div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Activa «Modo explicación» (arriba, en la cabecera)</h2>
+        <p class="tenue">Revela, en cada pantalla, una tarjeta "Bajo el capó" con la estructura de datos, el algoritmo
+        y la complejidad que usa el motor para ese requisito. Es la misma información del README (R12), repartida
+        donde ocurre cada requisito.</p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Requisito → dónde está en la app</h2>
+        <ul class="mapa-requisitos">
+          <li><b>R1</b> Buscar una estación <button type="button" class="enlace-panel" data-ir="estaciones" data-sub="buscar">Estaciones → Buscar</button></li>
+          <li><b>R2</b> Autocompletar <button type="button" class="enlace-panel" data-ir="estaciones" data-sub="buscar">Estaciones → Buscar</button> (también en Viajar y Operar)</li>
+          <li><b>R3</b> Listar un rango <button type="button" class="enlace-panel" data-ir="estaciones" data-sub="explorar">Estaciones → Explorar A–Z</button></li>
+          <li><b>R4</b> Próximo bus <button type="button" class="enlace-panel" data-ir="viajar">Viajar</button> (también en la ficha de Estaciones)</li>
+          <li><b>R5</b> Planear un viaje <button type="button" class="enlace-panel" data-ir="viajar">Viajar</button></li>
+          <li><b>R6</b> Ranking <button type="button" class="enlace-panel" data-ir="estaciones" data-sub="concurridas">Estaciones → Más concurridas</button></li>
+          <li><b>R7</b> Editar rutas <button type="button" class="enlace-panel" data-ir="operar">Operar la red</button></li>
+          <li><b>R8</b> Cerrar y reabrir <button type="button" class="enlace-panel" data-ir="operar">Operar la red</button></li>
+          <li><b>R9</b> Deshacer y rehacer <button type="button" class="enlace-panel" data-ir="operar">Operar la red</button></li>
+          <li><b>R10</b> Fila de abordaje <button type="button" class="enlace-panel" data-ir="horapico">Hora pico</button></li>
+          <li><b>R11</b> Panel de rendimiento <span class="tenue">— esta misma pantalla, arriba</span></li>
+          <li><b>R12</b> Decisiones de diseño <span class="tenue">— README.md del repositorio</span></li>
+        </ul>
+      </article>
     </section>
   </main>
 
