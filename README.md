@@ -151,7 +151,7 @@ La pestaña **Rendimiento** de la app (y `python -m rendimiento.medir`) copia la
 - `x in lista`;
 - imports distintos de `csv`, `time` y `random`.
 
-> ⚠️ **Por confirmar con el enunciado completo:** la presentación no especifica los **valores de retorno** exactos (por ejemplo, si `estado` devuelve una tupla o un texto). Los formatos elegidos están arriba y en el docstring de cada método de `motor/red.py`; si el enunciado dice otra cosa, basta con cambiar la última línea de ese método.
+> ✅ **Contrato confirmado contra el enunciado del profesor.** Las firmas de `Red(carpeta)`, `estado`, `autocompletar`, `rango`, `proximo_bus`, `viaje`, `ranking`, `agregar_parada`, `quitar_parada`, `recorrido`, `cerrar`/`reabrir`, `deshacer`/`rehacer` y `simular_fila` (función suelta, no método de `Red`) coinciden exactamente con las que el script del profesor va a llamar. Los **valores de retorno exactos** no los fija el enunciado letra por letra; los formatos elegidos (documentados arriba y en el docstring de cada método) son una decisión nuestra de R12, como pide la rúbrica.
 
 ## Forma de trabajo
 

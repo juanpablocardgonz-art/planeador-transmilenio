@@ -42,8 +42,8 @@ Hagan cada uno sin mirar la solución y corran `python -m unittest discover -s p
 
 ## 4. Antes de la entrega
 
-- [ ] `integrantes.md` con los usuarios de GitHub y qué requisito hizo cada uno.
-- [ ] Commits de **todos** a lo largo del proyecto (el historial vale 5 puntos).
-- [ ] Confirmar en el enunciado completo los formatos de retorno (ver la nota en el README).
+- [ ] `integrantes.md` con los usuarios de GitHub y qué requisito hizo cada uno (sigue pendiente de llenar con los datos reales del equipo).
+- [ ] Commits de **todos** a lo largo del proyecto (el historial vale 5 puntos). ⚠️ Ahora mismo todos los commits del motor, datos, pruebas, conversión, rendimiento y frontend tienen el mismo autor y el mismo segundo exacto: no cumplen "a lo largo del proyecto". Cada integrante debe hacer sus propios commits reales, desde su cuenta de GitHub, repasando y entendiendo el código que no escribió (lo necesitarán para la sustentación individual).
+- [x] Contrato confirmado contra la presentación oficial del profesor: las firmas de R1–R10 y `simular_fila` coinciden exactamente (ver la nota en el README).
 - [ ] Correr `convertir_gtfs.py` con el zip real y comparar con `datos/`.
 - [ ] Volver a medir el rendimiento en el computador de la presentación.
