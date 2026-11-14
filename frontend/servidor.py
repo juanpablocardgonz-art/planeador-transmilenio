@@ -71,8 +71,9 @@ def _estado_red():
 
 def api_estado(p):                                   # R1
     nombre = _texto(p, "nombre").strip().upper()
-    existe, abierta = RED.estado(nombre)
-    return {"nombre": nombre, "existe": existe, "abierta": abierta,
+    estado = RED.estado(nombre)              # "ABIERTA", "CERRADA" o "NO EXISTE"
+    existe = estado != "NO EXISTE"
+    return {"nombre": nombre, "estado": estado, "existe": existe, "abierta": estado == "ABIERTA",
             "rutas": RED.rutas_de(nombre) if existe else [],
             "buses": RED.buses_de(nombre)}
 
@@ -92,7 +93,7 @@ def api_proximo_bus(p):                              # R4
 
 
 def api_viaje(p):                                    # R5
-    resultado = RED.viaje(_texto(p, "origen").upper(), _texto(p, "destino").upper())
+    resultado = RED.viaje_con_paradas(_texto(p, "origen").upper(), _texto(p, "destino").upper())
     if resultado is None:
         return None
     paradas, tramos = resultado
@@ -105,7 +106,8 @@ def api_ranking(p):                                  # R6
 
 
 def api_recorrido(p):                                # R7
-    return RED.recorrido(_texto(p, "ruta"), _texto(p, "al_reves") == "1")
+    lista = RED.recorrido(_texto(p, "ruta"), _texto(p, "al_reves") == "1")
+    return lista if lista else None   # [] = la ruta no existe (o quedó vacía)
 
 
 def api_rutas(p):
@@ -178,6 +180,8 @@ def op_simular(d):                                   # R10
     frecuencia = max(1, int(d.get("frecuencia", 3)))
     capacidad = max(1, int(d.get("capacidad", 160)))
     gen = random.Random(int(d.get("semilla", 7)))
+    # La interfaz trabaja en MINUTOS (más fácil para una persona) y el motor
+    # en SEGUNDOS (contrato oficial): convertimos aquí, en la entrada y la salida.
     llegadas = []
     while len(llegadas) < pasajeros:
         t = gen.gauss(minutos / 2, minutos / 5)
@@ -185,7 +189,8 @@ def op_simular(d):                                   # R10
             llegadas.append(t)
     llegadas.sort()                    # fuera del motor sí se puede usar sort
 
-    salidas = simular_fila(llegadas, frecuencia, capacidad)   # <-- el motor
+    llegadas_s = [round(l * 60) for l in llegadas]
+    salidas = [s / 60 for s in simular_fila(llegadas_s, frecuencia * 60, capacidad)]  # <-- el motor
 
     # Estadísticas para la gráfica (esto es presentación, no lógica).
     esperas = [s - l for s, l in zip(salidas, llegadas)]
@@ -213,7 +218,7 @@ def op_simular(d):                                   # R10
 
 
 def op_medir(d):                                     # R11 (nueva medición)
-    resultado = medidor.medir()
+    resultado = medidor.medir(medidor.TAMANOS_PROFESOR)
     medidor.guardar(resultado)
     return resultado
 

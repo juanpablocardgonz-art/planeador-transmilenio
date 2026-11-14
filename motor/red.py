@@ -17,10 +17,9 @@
 #   red.deshacer(), red.rehacer()                 R9
 #   (simular_fila está en simulacion.py)          R10
 #
-# ⚠️  Los VALORES DE RETORNO exactos los define el enunciado completo del
-#     profesor (la presentación no los trae). Los que usamos aquí están
-#     documentados en cada método y en el README: si el enunciado dice otra
-#     cosa, solo hay que cambiar la última línea del método correspondiente.
+# Los VALORES DE RETORNO siguen el contrato oficial del profesor (documento
+# "Entrega y rúbrica"): solo listas, tuplas, textos, números, booleanos o
+# None. Nunca diccionarios ni conjuntos.
 #
 # ESTRUCTURAS QUE VIVEN DENTRO DE UNA Red (n = estaciones, R = rutas):
 #
@@ -163,16 +162,14 @@ class Red:
     def estado(self, nombre):
         """
         R1. ¿Existe la estación y está abierta?
-        Devuelve una tupla (existe, abierta):
-            (False, False) -> no existe
-            (True, True)   -> existe y está abierta
-            (True, False)  -> existe pero está cerrada
-        Estructura: tabla hash. Complejidad: O(1) promedio.
+        Devuelve el texto "ABIERTA", "CERRADA" o "NO EXISTE" (contrato oficial).
+        Estructura: tabla hash. Complejidad: O(1) promedio (O(L) en el largo
+        del nombre, que no depende de n).
         """
         est = self._estaciones.buscar(nombre)
         if est is None:
-            return (False, False)
-        return (True, est.abierta)
+            return "NO EXISTE"
+        return "ABIERTA" if est.abierta else "CERRADA"
 
     # ================================================== R2 AUTOCOMPLETAR
     def autocompletar(self, prefijo, k):
@@ -235,12 +232,20 @@ class Red:
     # ======================================================== R5 VIAJE
     def viaje(self, origen, destino):
         """
-        R5. Viaje directo o con un transbordo con menos paradas.
-        Devuelve (total_paradas, tramos) o None si no hay viaje.
-          tramos = [(ruta, sube_en, baja_en)]                       directo
-                 = [(ruta1, origen, transbordo), (ruta2, transbordo, destino)]
+        R5. Viaje directo o con un transbordo que recorra menos paradas.
+        Devuelve la LISTA DE TRAMOS (contrato oficial) o None si no hay viaje:
+          [(ruta, sube_en, baja_en)]                                 directo
+          [(ruta1, origen, transbordo), (ruta2, transbordo, destino)] con transbordo
+        Si origen == destino (abierta) devuelve [] (no hay que tomar bus).
         Ver planificador.py. Complejidad: O(L_origen + L_destino).
         """
+        resultado = self.viaje_con_paradas(origen, destino)
+        if resultado is None:
+            return None
+        return resultado[1]
+
+    def viaje_con_paradas(self, origen, destino):
+        """Extra para la app: (total_paradas, tramos) o None."""
         o = self._estaciones.buscar(origen)
         d = self._estaciones.buscar(destino)
         if o is None or d is None:
@@ -314,11 +319,11 @@ class Red:
     def recorrido(self, ruta, al_reves=False):
         """
         R7. Lista de nombres de estaciones de la ruta, en su sentido o al
-        revés. None si la ruta no existe. Complejidad: O(L).
+        revés. [] si la ruta no existe (contrato oficial). Complejidad: O(L).
         """
         obj_ruta = self._rutas.buscar(ruta)
         if obj_ruta is None:
-            return None
+            return []
         nombres = []
         for nodo in obj_ruta.paradas.recorrer(al_reves):
             nombres.append(nodo.estacion.nombre)

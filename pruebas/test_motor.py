@@ -38,10 +38,12 @@ class PruebasConsultas(unittest.TestCase):
 
     # ---------------------------------------------------------------- R1
     def test_r1_estado(self):
-        self.assertEqual(self.red.estado("A"), (True, True))
-        self.assertEqual(self.red.estado("NO EXISTE"), (False, False))
+        self.assertEqual(self.red.estado("A"), "ABIERTA")
+        self.assertEqual(self.red.estado("NO EXISTE"), "NO EXISTE")
         self.red.cerrar("A")
-        self.assertEqual(self.red.estado("A"), (True, False))
+        self.assertEqual(self.red.estado("A"), "CERRADA")
+        # Los nombres van exactamente como vienen en el CSV.
+        self.assertEqual(self.red.estado("a"), "NO EXISTE")
 
     # ---------------------------------------------------------------- R2
     def test_r2_autocompletar(self):
@@ -77,20 +79,19 @@ class PruebasConsultas(unittest.TestCase):
     # ---------------------------------------------------------------- R5
     def test_r5_viaje(self):
         # Directo por R1 (3 paradas) es mejor que por R3 (5 paradas).
-        self.assertEqual(self.red.viaje("A", "D"), (3, [("R1", "A", "D")]))
+        self.assertEqual(self.red.viaje("A", "D"), [("R1", "A", "D")])
         # Con transbordo en C: A->C por R1 (2) + C->X por R2 (2).
-        self.assertEqual(self.red.viaje("A", "X"),
-                         (4, [("R1", "A", "C"), ("R2", "C", "X")]))
-        self.assertEqual(self.red.viaje("B", "E"),
-                         (2, [("R1", "B", "C"), ("R2", "C", "E")]))
+        self.assertEqual(self.red.viaje("A", "X"), [("R1", "A", "C"), ("R2", "C", "X")])
+        self.assertEqual(self.red.viaje_con_paradas("A", "X")[0], 4)
+        self.assertEqual(self.red.viaje("B", "E"), [("R1", "B", "C"), ("R2", "C", "E")])
         # Si cerramos C, ya no se puede transbordar ahí: toca por D.
         self.red.cerrar("C")
-        self.assertEqual(self.red.viaje("B", "E"),
-                         (3, [("R1", "B", "D"), ("R3", "D", "E")]))
+        self.assertEqual(self.red.viaje("B", "E"), [("R1", "B", "D"), ("R3", "D", "E")])
         # Casos borde.
         self.assertIsNone(self.red.viaje("D", "A"))      # no hay forma
         self.assertIsNone(self.red.viaje("A", "C"))      # destino cerrado
-        self.assertEqual(self.red.viaje("A", "A"), (0, []))
+        self.assertIsNone(self.red.viaje("C", "A"))      # origen cerrado
+        self.assertEqual(self.red.viaje("A", "A"), [])
         self.assertIsNone(self.red.viaje("A", "NOPE"))
 
     # ---------------------------------------------------------------- R6
@@ -123,7 +124,7 @@ class PruebasConsultas(unittest.TestCase):
         self.assertFalse(self.red.agregar_parada("R1", "E", "NOPE"))  # ref no está
         self.assertFalse(self.red.agregar_parada("NOPE", "E", "A"))
         self.assertFalse(self.red.quitar_parada("R1", "E"))
-        self.assertIsNone(self.red.recorrido("NOPE"))
+        self.assertEqual(self.red.recorrido("NOPE"), [])
 
     # ---------------------------------------------------------------- R8
     def test_r8_cerrar_reabrir(self):
@@ -132,7 +133,7 @@ class PruebasConsultas(unittest.TestCase):
         self.assertFalse(self.red.cerrar("NOPE"))
         self.assertTrue(self.red.reabrir("B"))
         self.assertFalse(self.red.reabrir("B"))      # ya abierta
-        self.assertEqual(self.red.estado("B"), (True, True))
+        self.assertEqual(self.red.estado("B"), "ABIERTA")
 
     # ---------------------------------------------------------------- R9
     def test_r9_deshacer_rehacer(self):
@@ -147,25 +148,30 @@ class PruebasConsultas(unittest.TestCase):
         self.assertTrue(self.red.deshacer())
         self.assertEqual(self.red.recorrido("R1"), ["A", "B", "C", "D"])
         self.assertTrue(self.red.deshacer())
-        self.assertEqual(self.red.estado("A"), (True, True))
+        self.assertEqual(self.red.estado("A"), "ABIERTA")
         self.assertEqual(self.red.ranking(1), [("A", 4)])
         # Rehacemos.
         self.assertTrue(self.red.rehacer())
-        self.assertEqual(self.red.estado("A"), (True, False))
+        self.assertEqual(self.red.estado("A"), "CERRADA")
         self.assertTrue(self.red.rehacer())
         self.assertEqual(self.red.recorrido("R1"), ["A", "C", "D"])
         # Un cambio nuevo borra lo que había para rehacer.
         self.red.reabrir("A")
         self.assertFalse(self.red.rehacer())
-        self.assertEqual(self.red.estado("A"), (True, True))
+        self.assertEqual(self.red.estado("A"), "ABIERTA")
 
 
 class PruebasFila(unittest.TestCase):
     # ---------------------------------------------------------------- R10
+    def test_r10_ejemplo_del_enunciado(self):
+        self.assertEqual(simular_fila([30, 5, 5, 70], 60, 2), [120, 60, 60, 120])
+
     def test_r10_basico(self):
-        # Buses salen en 0, 5, 10, ... con 2 cupos.
+        # Buses salen en 5, 10, 15, ... con 2 cupos (el primero en 'frecuencia').
         salidas = simular_fila([0, 1, 1, 2, 7, 7, 7, 30], 5, 2)
-        self.assertEqual(salidas, [0, 5, 5, 10, 10, 15, 15, 30])
+        self.assertEqual(salidas, [5, 5, 10, 10, 15, 15, 20, 30])
+        # Quien llega justo en el segundo de salida alcanza ese bus.
+        self.assertEqual(simular_fila([60, 60, 61], 60, 5), [60, 60, 120])
 
     def test_r10_desordenado_y_bordes(self):
         # Llegadas desordenadas: se atiende por hora de llegada; si empatan,
@@ -179,9 +185,9 @@ class PruebasFila(unittest.TestCase):
         llegadas = list(range(200000))       # uno por minuto
         salidas = simular_fila(llegadas, 10, 100)
         self.assertEqual(len(salidas), 200000)
-        self.assertEqual(salidas[0], 0)
-        self.assertEqual(salidas[1], 10)
+        self.assertEqual(salidas[0], 10)
         self.assertEqual(salidas[10], 10)
+        self.assertEqual(salidas[11], 20)
 
 
 class PruebasRedReal(unittest.TestCase):

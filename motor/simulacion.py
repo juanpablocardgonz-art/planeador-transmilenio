@@ -3,18 +3,22 @@
 # -----------------------------------------------------------------------------
 # R10: simulación de la FILA DE ABORDAJE en hora pico con una COLA (FIFO).
 #
-# Modelo (decisión del grupo, ver README):
-#   - llegadas:   lista de números; llegadas[i] = minuto en que llega el
+# Modelo (contrato oficial del profesor):
+#   - llegadas:   lista de números; llegadas[i] = SEGUNDO en que llega el
 #                 pasajero i a la estación.
-#   - frecuencia: cada cuántos minutos sale un bus. Salen en los minutos
-#                 0, f, 2f, 3f, ... (múltiplos de la frecuencia).
+#   - frecuencia: segundos entre buses. Los buses salen en los segundos
+#                 f, 2f, 3f, ... (el primero sale en f, NO en 0).
 #   - capacidad:  cuántos pasajeros caben en cada bus.
-#   - Un pasajero que llega justo en el minuto de salida alcanza ese bus.
-#   - Suben en ORDEN DE LLEGADA (FIFO). Si dos llegan al mismo minuto, sube
+#   - Un pasajero que llega justo en el segundo de salida alcanza ese bus.
+#
+# Ejemplo del enunciado: simular_fila([30, 5, 5, 70], 60, 2) -> [120, 60, 60, 120]
+#   Las dos personas del segundo 5 suben al bus de los 60 (cupo 2 lleno);
+#   la del 30 se queda y sube con la del 70 al bus de los 120.
+#   - Suben en ORDEN DE LLEGADA (FIFO). Si dos llegan al mismo segundo, sube
 #     primero el que aparece antes en la lista.
 #
 # Devuelve: una lista 'salidas' del mismo tamaño que 'llegadas', donde
-#   salidas[i] = minuto en que sale el bus en el que se subió el pasajero i.
+#   salidas[i] = segundo en que sale el bus en el que se subió el pasajero i.
 #   (La espera del pasajero i es salidas[i] - llegadas[i].)
 #
 # ALGORITMO (simulación por eventos):
@@ -53,7 +57,7 @@ def simular_fila(llegadas, frecuencia, capacidad):
     if esta_ordenada(llegadas):
         orden = indices
     else:
-        # Merge Sort es ESTABLE: si dos llegan al mismo minuto, se respeta
+        # Merge Sort es ESTABLE: si dos llegan al mismo segundo, se respeta
         # el orden original de la lista.
         orden = merge_sort(indices, lambda i: llegadas[i])
 
@@ -61,7 +65,7 @@ def simular_fila(llegadas, frecuencia, capacidad):
     cola = Cola()
     siguiente = 0      # posición en 'orden' del próximo pasajero por llegar
     atendidos = 0      # cuántos ya se subieron a un bus
-    hora_bus = None    # minuto de salida del bus actual
+    hora_bus = None    # segundo de salida del bus actual
 
     while atendidos < total:
         # 3a. Si nadie espera, saltamos al primer bus que alcanza el
@@ -72,6 +76,9 @@ def simular_fila(llegadas, frecuencia, capacidad):
             candidato = multiplo * frecuencia
             if candidato < llegada:
                 candidato = candidato + frecuencia
+            # El primer bus del día sale en 'frecuencia', no en 0.
+            if candidato < frecuencia:
+                candidato = frecuencia
             if hora_bus is None or candidato > hora_bus:
                 hora_bus = candidato
 
@@ -88,7 +95,7 @@ def simular_fila(llegadas, frecuencia, capacidad):
             subieron += 1
             atendidos += 1
 
-        # 3d. El siguiente bus sale 'frecuencia' minutos después.
+        # 3d. El siguiente bus sale 'frecuencia' segundos después.
         hora_bus = hora_bus + frecuencia
 
     return salidas
