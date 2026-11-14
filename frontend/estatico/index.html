@@ -109,7 +109,54 @@
 
     <!-- =============================================== B. ESTACIONES -->
     <section class="panel" id="panel-estaciones">
-      <p class="cargando">Cargando…</p>
+      <nav class="subpestanas" role="tablist">
+        <button type="button" class="subpestana activa" data-sub="buscar">Buscar</button>
+        <button type="button" class="subpestana" data-sub="explorar">Explorar A–Z</button>
+        <button type="button" class="subpestana" data-sub="concurridas">Más concurridas</button>
+      </nav>
+
+      <div class="subpanel activo" id="sub-buscar">
+        <div class="campo-auto campo-grande">
+          <label for="in-estacion">Nombre de la estación</label>
+          <input id="in-estacion" placeholder="Ej. CALLE 26">
+        </div>
+        <div id="ficha-estacion" class="ficha-estacion">
+          <p class="vacio">Escribe el nombre de una estación, por ejemplo CALLE 26.</p>
+        </div>
+        <details class="capo"><summary>Bajo el capó — R1 Buscar una estación</summary>
+          <p><b>Tabla hash propia</b> con encadenamiento (<code>motor/tabla_hash.py</code>): nombre → estación.
+          Función hash polinomial, rehash al superar factor de carga 0.75.</p>
+          <p>Complejidad: <b>O(1)</b> promedio. Alternativa descartada: búsqueda binaria O(log n).</p>
+        </details>
+      </div>
+
+      <div class="subpanel" id="sub-explorar">
+        <div class="fila-form">
+          <div class="campo-auto"><label for="in-rango-desde">Desde</label><input id="in-rango-desde" placeholder="Ej. CALLE 26"></div>
+          <div class="campo-auto"><label for="in-rango-hasta">Hasta</label><input id="in-rango-hasta" placeholder="Ej. CALLE 80"></div>
+          <button id="btn-rango-explorar" type="button">Listar</button>
+        </div>
+        <div id="out-explorar"></div>
+        <details class="capo"><summary>Bajo el capó — R2 y R3</summary>
+          <p><b>Árbol AVL</b> con los nombres de las estaciones <i>abiertas</i> (<code>motor/avl.py</code>). El recorrido en
+          orden empieza en el primer nombre ≥ <i>desde</i> y se detiene al pasar <i>hasta</i>. Las cerradas nunca aparecen.</p>
+          <p>Complejidad: <b>O(log n + r)</b>, r = estaciones devueltas.</p>
+        </details>
+      </div>
+
+      <div class="subpanel" id="sub-concurridas">
+        <div class="fila-form">
+          <label class="k">Mostrar <input id="in-rank-k" type="number" value="12" min="3" max="100"></label>
+          <button id="btn-rank" type="button">Actualizar</button>
+        </div>
+        <div id="out-podio" class="podio"></div>
+        <div id="out-concurridas" class="barras"></div>
+        <details class="capo"><summary>Bajo el capó — R6 Ranking</summary>
+          <p><b>AVL</b> con clave <code>(-buses, nombre)</code>: al negar los buses, el recorrido en orden da primero las de
+          más buses y desempata alfabéticamente. Solo se actualiza cuando algo cambia (cerrar, reabrir, editar una ruta).</p>
+          <p>Consulta: <b>O(log n + k)</b>. Alternativa descartada: ordenar todo en cada consulta, O(n log n).</p>
+        </details>
+      </div>
     </section>
 
     <!-- ============================================ C. OPERAR LA RED -->
