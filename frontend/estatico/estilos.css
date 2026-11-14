@@ -136,7 +136,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 24px; }
 .boton-icono:hover { background: var(--borde); }
 
 .fila-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 12px; }
-.fila-form > * { flex: 1 1 180px; }
+.fila-form > .campo-auto { flex: 1 1 180px; }
 .k { display: flex; gap: 8px; align-items: center; color: var(--tenue); }
 .k input { width: 80px; flex: none; }
 
@@ -167,10 +167,15 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
 .toast {
   position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%) translateY(80px);
   background: var(--texto); color: var(--superficie); padding: 10px 10px 10px 16px; border-radius: 10px;
-  transition: transform .25s; max-width: calc(100% - 32px); z-index: 50;
+  transition: transform .25s, visibility .25s; max-width: calc(100% - 32px); z-index: 50;
   display: flex; align-items: center; gap: 10px;
+  /* En reposo (sin .visible) debe desaparecer DE VERDAD, no solo moverse: en
+     celular, bottom:86px + el desplazamiento no alcanza a despejar la barra
+     de navegación inferior, y su caja (por el padding) tapaba el botón
+     central aunque estuviera vacía. */
+  visibility: hidden;
 }
-.toast.visible { transform: translateX(-50%) translateY(0); }
+.toast.visible { transform: translateX(-50%) translateY(0); visibility: visible; }
 .toast button { background: var(--acento); color: #fff; padding: 6px 12px; font-size: 13px; }
 @media (min-width: 701px) { .toast { bottom: 20px; } }
 

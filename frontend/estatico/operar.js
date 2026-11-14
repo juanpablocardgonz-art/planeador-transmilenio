@@ -142,6 +142,10 @@ let descripcionesRehacer = [];
 function registrarAccion(descripcion) {
   descripcionesDeshacer.push(descripcion);
   descripcionesRehacer = [];
+  // El evento "red-actualizada" (que repinta esta barra) se dispara DENTRO
+  // de operar(), antes de que quien llamó a operar() alcance a registrar la
+  // descripción. Por eso se repinta otra vez aquí, con la pila ya al día.
+  actualizarBarraHistorial();
 }
 
 function actualizarBarraHistorial() {

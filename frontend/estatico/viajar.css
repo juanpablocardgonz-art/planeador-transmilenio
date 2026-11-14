@@ -37,7 +37,13 @@
 .tramo-cuerpo .cambia { color: var(--acento); font-weight: 600; }
 .tramo-cuerpo .horas { margin-top: 6px; }
 
+/* El botón de intercambiar usa un ícono horizontal (⇄) en escritorio y uno
+   vertical (⇅) en celular, en vez de rotar el mismo ícono: rotar la flecha
+   horizontal 90° no deja un ícono vertical claro. */
+.icono-vertical { display: none; }
 @media (max-width: 700px) {
   .viajar-form { grid-template-columns: 1fr; }
-  .viajar-form .boton-icono { justify-self: center; transform: rotate(90deg); }
+  .viajar-form .boton-icono { justify-self: center; }
+  .icono-horizontal { display: none; }
+  .icono-vertical { display: block; }
 }
