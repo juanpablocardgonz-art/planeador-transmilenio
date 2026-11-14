@@ -34,16 +34,22 @@ def _posicion_columna(encabezado, nombre_columna, ruta_archivo):
 
 def leer_tabla(ruta_archivo, columnas):
     """
-    Lee un CSV y devuelve una lista de filas, donde cada fila es una lista
+    Recorre un CSV fila por fila y ENTREGA (yield) cada fila como una lista
     con los valores de 'columnas' en ese orden (ya sin espacios sobrantes).
     Las filas vacías o incompletas se ignoran.
+
+    ¿Por qué un GENERADOR (yield) y no devolver una lista con todas las filas?
+    Con la red de 80.000 estaciones, horarios.csv tiene ~2.5 millones de
+    filas. Guardarlas todas en una lista ocupaba casi 1 GB de memoria y hacía
+    la carga más lenta de lo lineal (el recolector de basura de Python revisa
+    más objetos cuanto más memoria hay). Con yield solo existe UNA fila a la
+    vez en memoria: la carga queda O(filas) en tiempo y O(1) extra en memoria.
     """
-    filas = []
     with _abrir(ruta_archivo) as archivo:
         lector = csv.reader(archivo)
         encabezado = next(lector, None)
         if encabezado is None:
-            return filas  # archivo vacío
+            return  # archivo vacío: el generador no entrega nada
         # 1. Averiguamos la posición de cada columna pedida.
         posiciones = []
         for col in columnas:
@@ -58,5 +64,4 @@ def leer_tabla(ruta_archivo, columnas):
                     break
                 valores.append(fila[p].strip())
             if completa:
-                filas.append(valores)
-    return filas
+                yield valores

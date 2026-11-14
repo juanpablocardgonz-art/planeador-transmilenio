@@ -12,6 +12,12 @@
 # =============================================================================
 
 
+# Tabla con los enteros 0..2879 (dos días de minutos). Devolver SIEMPRE el
+# mismo objeto entero para el mismo minuto ahorra memoria: con 2.5 millones de
+# horarios, en vez de 2.5 millones de enteros distintos hay solo 2.880.
+_MINUTOS = list(range(48 * 60))
+
+
 def a_minutos(hora):
     """Convierte "HH:MM" en minutos desde la medianoche. Ej: "07:05" -> 425."""
     # 1. Quitamos espacios accidentales al principio o al final.
@@ -29,8 +35,11 @@ def a_minutos(hora):
     #    decide qué hacer con ellas; el motor solo no se rompe.
     if horas < 0 or minutos < 0 or minutos > 59:
         raise ValueError("Hora fuera de rango: " + str(hora))
-    # 6. Fórmula: horas * 60 + minutos.
-    return horas * 60 + minutos
+    # 6. Fórmula: horas * 60 + minutos (reusando el entero de la tabla).
+    total = horas * 60 + minutos
+    if total < len(_MINUTOS):
+        return _MINUTOS[total]
+    return total
 
 
 def a_texto(minutos):
