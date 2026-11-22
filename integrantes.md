@@ -1,19 +1,19 @@
-# Equipo
+# Integrantes
 
-| Integrante | Usuario de GitHub | Área o tarea inicial |
-|---|---|---|
-| Pablo | Pendiente | Por acordar |
-| Valeria | Pendiente | Por acordar |
-| David | Pendiente | Por acordar |
-| Pachito | Pendiente | Por acordar |
+> **Completar antes de la entrega.** El profesor pide el nombre de cada integrante y qué requisitos hizo cada uno.
+> En la sustentación pregunta a cualquiera por cualquier requisito, así que todos deben conocer el motor completo
+> (ver `docs/GUIA_DE_ESTUDIO.md`).
 
-## Organización inicial propuesta
+| Integrante | Usuario de GitHub | Requisitos | Además |
+|---|---|---|---|
+| Pablo | _pendiente_ | _por definir_ | |
+| Valeria | _pendiente_ | _por definir_ | |
+| David | _pendiente_ | _por definir_ | |
+| Pachito | _pendiente_ | _por definir_ | |
 
-Definan juntos las responsabilidades antes de dividir la implementación. Como punto de partida, pueden distribuir el trabajo entre:
+Reparto sugerido por las preguntas de la sustentación:
 
-1. Datos, carga de CSV y pruebas del formato.
-2. Consultas de estaciones, índices y horarios.
-3. Grafos y planeación de viajes.
-4. Operaciones de red, historial, simulación e integración.
-
-La distribución es una propuesta: acuerden responsables y revisores en el tablero del grupo, y mantengan una revisión cruzada para que las cuatro personas puedan explicar el motor completo.
+1. R1, R2, R3: tabla hash y árbol AVL de estaciones.
+2. R4 y R5: horarios (Merge Sort + búsqueda binaria) y planificador de viajes.
+3. R6, R8 y R9: ranking, cerrar/reabrir y deshacer/rehacer.
+4. R7, R10 y R11: recorridos (lista doble), fila de abordaje y panel de rendimiento.

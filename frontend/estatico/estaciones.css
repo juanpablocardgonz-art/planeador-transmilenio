@@ -1,0 +1,68 @@
+/* ============================================================================
+   frontend/estatico/estaciones.css — pantalla "Estaciones" (R1, R2, R3, R6).
+   ========================================================================= */
+.subpestanas { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--borde); overflow-x: auto; }
+.subpestana {
+  background: none; border: 0; color: var(--tenue); padding: 10px 6px; margin-right: 18px;
+  border-bottom: 3px solid transparent; font-weight: 600; font-size: 14.5px; white-space: nowrap;
+}
+.subpestana.activa { color: var(--texto); border-bottom-color: var(--acento); }
+.subpanel { display: none; }
+.subpanel.activo { display: block; }
+
+/* ----------------------------------------------------------------- ficha */
+.ficha-estacion {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+  padding: 20px 22px; box-shadow: var(--sombra); margin-top: 16px;
+}
+.ficha-cabecera { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.ficha-cabecera h2 { margin: 0; font-size: 20px; }
+.ficha-buses { color: var(--tenue); margin: 2px 0 14px; }
+.ficha-rutas { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ficha-rutas button {
+  border: 0; cursor: pointer; font: inherit;
+}
+.ficha-rutas .pastilla-ruta { border: none; }
+.detalle-ruta-estacion {
+  margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--borde);
+}
+
+/* ------------------------------------------------------------- explorar A-Z */
+.indice-letras { display: flex; flex-wrap: wrap; gap: 4px; margin: 14px 0; }
+.indice-letras button {
+  width: 30px; height: 30px; padding: 0; border-radius: 7px; background: var(--fondo);
+  color: var(--texto); font-weight: 700; font-size: 13px;
+}
+.indice-letras button:hover { background: var(--borde); }
+.grupo-letra { margin-top: 18px; }
+.grupo-letra h3 {
+  font-size: 13px; color: var(--tenue); text-transform: uppercase; letter-spacing: .04em;
+  margin: 0 0 6px; scroll-margin-top: 150px;
+}
+.lista-az { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 2px 10px; }
+.lista-az li { padding: 5px 0; font-size: 14px; }
+
+/* ------------------------------------------------------------- concurridas */
+.podio { display: flex; align-items: flex-end; gap: 10px; margin: 18px 0 20px; justify-content: center; }
+.podio-puesto {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 12px 12px 0 0;
+  padding: 14px 16px; text-align: center; box-shadow: var(--sombra); flex: 1 1 0; max-width: 220px;
+}
+.podio-puesto .medalla { font-size: 22px; font-weight: 800; color: var(--acento); }
+.podio-puesto .nombre { font-weight: 700; margin: 6px 0 2px; word-break: break-word; }
+.podio-puesto .buses { color: var(--tenue); font-size: 13px; }
+.podio-puesto.puesto-1 { padding-top: 24px; order: 2; }
+.podio-puesto.puesto-2 { order: 1; }
+.podio-puesto.puesto-3 { order: 3; }
+
+.barras { display: grid; gap: 4px; margin: 8px 0; }
+.barra-fila { display: grid; grid-template-columns: 28px minmax(120px, 220px) 1fr 56px; align-items: center; gap: 8px; font-size: 13.5px; }
+.barra-fila .pos { color: var(--tenue); text-align: right; font-variant-numeric: tabular-nums; }
+.barra-fila .valor { text-align: right; font-variant-numeric: tabular-nums; }
+.barra-fila .pista { height: 14px; background: var(--fondo); border-radius: 4px; overflow: hidden; }
+.barra-fila .relleno { height: 100%; background: var(--acento); border-radius: 4px; display: block; }
+
+@media (max-width: 700px) {
+  .barra-fila { grid-template-columns: 22px minmax(90px, 1fr) 1fr 46px; }
+  .podio { flex-wrap: wrap; }
+}

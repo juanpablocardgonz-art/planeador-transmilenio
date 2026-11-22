@@ -1,0 +1,27 @@
+/* ============================================================================
+   frontend/estatico/hora-pico.css — pantalla "Hora pico" (R10).
+   ========================================================================= */
+.controles-simulador {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px 24px;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+  padding: 20px 22px; box-shadow: var(--sombra); margin-bottom: 20px;
+}
+.controles-simulador label { display: grid; gap: 6px; font-size: 14px; color: var(--texto); font-weight: 600; }
+.controles-simulador label output { color: var(--acento); font-variant-numeric: tabular-nums; font-weight: 700; }
+.controles-simulador input[type="range"] { width: 100%; accent-color: var(--acento); padding: 0; background: none; border: 0; }
+.controles-simulador button { grid-column: 1 / -1; justify-self: start; }
+
+.frase-resultado { font-size: 16px; margin: 4px 0 18px; }
+.frase-resultado p { margin: 4px 0; }
+.frase-resultado b { font-variant-numeric: tabular-nums; }
+
+.escena-anden {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+  padding: 10px 14px; box-shadow: var(--sombra); margin-bottom: 14px; overflow: hidden;
+}
+.escena-anden p.tenue { margin: 0 0 4px; font-size: 12px; }
+
+.grafica-fila {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+  padding: 14px 16px; box-shadow: var(--sombra);
+}
