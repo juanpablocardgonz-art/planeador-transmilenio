@@ -6,10 +6,11 @@
 
 | Integrante | Usuario de GitHub | Requisitos | Además |
 |---|---|---|---|
-| Pablo | _pendiente_ | _por definir_ | |
-| Valeria | _pendiente_ | _por definir_ | |
-| David | _pendiente_ | _por definir_ | |
-| Pachito | _pendiente_ | _por definir_ | |
+| Valeria | valeriavpb | R1, R2, R3 y la carga de los CSV | `tabla_hash.py`, `avl.py`, `carga.py` | Pregunta 1 |
+| David | d202514822-blip | R4 y R5 | `ordenamiento.py`, `planificador.py`, `horas.py` | Preguntas 2 y 3 |
+| Francisco | Pachito0210 | R6, R8 y R9 | `historial.py`, `pila_cola.py`, ranking en `red.py` | Preguntas 4 y 5 (parte de R9) |
+| Pablo | juanpablocardgonz-art | R7, R10, R11 y el front | `lista_doble.py`, `simulacion.py`, `rendimiento/`, `frontend/` | Preguntas 5 (R7) y 6 |
+
 
 Reparto sugerido por las preguntas de la sustentación:
 

@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-14 04:53",
+  "fecha": "2026-11-22 12:24",
   "estaciones": [
     10000,
     20000,
@@ -16,17 +16,17 @@
       "que_es_n": "n = filas de los CSV",
       "explicacion": "Lee cada fila una vez. Merge Sort solo ordena las horas de un mismo par (ruta, estación), que no crece con la red. El profesor solo mide cuánto tarda.",
       "tiempos_us": [
-        690705.625000021,
-        1627213.8990000258,
-        3356154.499000013,
-        8824869.782000007
+        1168381.0999966227,
+        2869231.0000187717,
+        5535360.800044145,
+        13277729.100023862
       ],
       "razones": [
-        2.355871792704709,
-        2.062515875179333,
-        2.62945874054053
+        2.45573212372835,
+        1.929214064677236,
+        2.39871068565539
       ],
-      "pendiente_medida": 1.2070701561404578,
+      "pendiente_medida": 1.1467290007091515,
       "pendiente_esperada": 1.0,
       "coincide": true
     },
@@ -37,17 +37,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Tabla hash propia. Puede subir un poco al crecer la tabla por fallos de caché de memoria, no por más comparaciones.",
       "tiempos_us": [
-        0.22604899999123518,
-        0.23158800001965574,
-        0.25927899997668646,
-        0.23433499995917373
+        0.41449995478615165,
+        0.4180999821983278,
+        0.4154000198468566,
+        0.4798000445589423
       ],
       "razones": [
-        1.0245035369704591,
-        1.1195700984277273,
-        0.9037947538375433
+        1.008685229927307,
+        0.9935423045529085,
+        1.1550313472200309
       ],
-      "pendiente_medida": 0.031875560257344525,
+      "pendiente_medida": 0.062383734494455154,
       "pendiente_esperada": 0.0,
       "coincide": true
     },
@@ -58,17 +58,17 @@
       "que_es_n": "n = estaciones abiertas (k = 10)",
       "explicacion": "AVL: bajar O(log n) + recorrer k nodos con una pila. k es fijo.",
       "tiempos_us": [
-        2.5306780000278195,
-        2.6198180000278626,
-        3.0118750000269756,
-        2.9966039999749228
+        3.8096000207588077,
+        4.209499980788678,
+        4.5708000543527305,
+        7.032900000922382
       ],
       "razones": [
-        1.0352237621692935,
-        1.1496504719010798,
-        0.9949297364426093
+        1.104971639503041,
+        1.0858296888497339,
+        1.5386584224407314
       ],
-      "pendiente_medida": 0.09326087822391517,
+      "pendiente_medida": 0.27722383474413187,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -79,17 +79,17 @@
       "que_es_n": "n = estaciones abiertas (r = 1)",
       "explicacion": "AVL: O(log n + r). Medimos un rango de 1 resultado para aislar el log n; r depende de lo que se pida, no de la red.",
       "tiempos_us": [
-        1.3050819999875785,
-        1.1873079999986658,
-        1.3099429999670065,
-        1.4364380000415622
+        2.0607999758794904,
+        1.881500007584691,
+        2.1131999674253166,
+        3.187499998603016
       ],
       "razones": [
-        0.909757394562155,
-        1.1032882790046714,
-        1.096565270456609
+        0.9129949677827033,
+        1.1231464038833898,
+        1.5083759453614827
       ],
-      "pendiente_medida": 0.05568756074888464,
+      "pendiente_medida": 0.20552085765223257,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -100,19 +100,19 @@
       "que_es_n": "n = horas de esa ruta en esa estación",
       "explicacion": "Hash O(1) para llegar a la parada + búsqueda binaria O(log h). h no crece con el número de estaciones.",
       "tiempos_us": [
-        2.7827389999970364,
-        2.175679999993463,
-        2.205102999994324,
-        2.566832000013619
+        3.563000005669892,
+        3.4288999740965664,
+        4.406999971251935,
+        7.053400040604174
       ],
       "razones": [
-        0.7818483875044623,
-        1.0135235880280875,
-        1.1640417703935944
+        0.9623631682963995,
+        1.2852518313582695,
+        1.6004992254629975
       ],
-      "pendiente_medida": -0.03301705152993197,
+      "pendiente_medida": 0.3317730208241614,
       "pendiente_esperada": 0.0,
-      "coincide": true
+      "coincide": false
     },
     {
       "clave": "viaje",
@@ -121,19 +121,19 @@
       "que_es_n": "L = largo de las rutas del origen y destino",
       "explicacion": "R5 está excluido de la medición del profesor. Cuesta O(L_origen + L_destino): no depende del total de estaciones.",
       "tiempos_us": [
-        33.41171199986093,
-        18.666164000023855,
-        21.284639999976207,
-        22.759819999919273
+        21.776000037789345,
+        28.93720008432865,
+        37.19639987684786,
+        49.48720009997487
       ],
       "razones": [
-        0.558671282695767,
-        1.1402792775178128,
-        1.069307256309936
+        1.3288574593181484,
+        1.285418069766608,
+        1.3304298336349794
       ],
-      "pendiente_medida": -0.14722070660985936,
+      "pendiente_medida": 0.3915186992928872,
       "pendiente_esperada": 0.0,
-      "coincide": true
+      "coincide": false
     },
     {
       "clave": "ranking",
@@ -142,17 +142,17 @@
       "que_es_n": "n = estaciones abiertas (k = 10)",
       "explicacion": "AVL con clave (-buses, nombre): O(log n + k). Se mantiene al día en cada cambio, no se reordena al consultar.",
       "tiempos_us": [
-        1.4459149999765941,
-        1.4805249999767511,
-        1.4555879999988974,
-        1.5330339999763964
+        2.913900010753423,
+        2.951699949335307,
+        4.226699995342642,
+        4.335100005846471
       ],
       "razones": [
-        1.0239364001346671,
-        0.983156650527181,
-        1.053205989591531
+        1.0129722840325295,
+        1.431954489918412,
+        1.0256464879511848
       ],
-      "pendiente_medida": 0.02287140598913975,
+      "pendiente_medida": 0.22373273490645473,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -163,17 +163,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Lista doble + hash O(1) en la ruta; actualizar el ranking (AVL) es O(log n).",
       "tiempos_us": [
-        15.308139418261803,
-        14.690105105104351,
-        14.509196000005886,
-        20.0403270000038
+        27.818956885042198,
+        23.184284275104933,
+        26.37539996067062,
+        30.91529995435849
       ],
       "razones": [
-        0.9596270783619746,
-        0.9876849686367728,
-        1.3812155408194684
+        0.8333987636887545,
+        1.1376413283972833,
+        1.1721262995237034
       ],
-      "pendiente_medida": 0.11479441707823881,
+      "pendiente_medida": 0.06428038170963425,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -184,17 +184,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Igual que agregar: O(1) en la ruta + O(log n) en el ranking.",
       "tiempos_us": [
-        12.497893000045224,
-        11.599132000014833,
-        12.449161999995795,
-        16.277658000035444
+        23.482899996452034,
+        21.988100023008883,
+        24.320200027432293,
+        29.146699991542846
       ],
       "razones": [
-        0.9280869983422695,
-        1.0732839319338614,
-        1.3075304185165992
+        0.9363451714367051,
+        1.1060619153989224,
+        1.198456425467983
       ],
-      "pendiente_medida": 0.12456565297913687,
+      "pendiente_medida": 0.10805980459996554,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -205,19 +205,19 @@
       "que_es_n": "L = paradas de la ruta",
       "explicacion": "Es O(L): recorre la lista enlazada. L no crece al crecer la red.",
       "tiempos_us": [
-        2.9729280000196923,
-        2.6024989999768877,
-        2.0521259999668473,
-        2.1441659999936746
+        2.8466000221669674,
+        4.079300037119538,
+        5.869499989785254,
+        7.802199979778379
       ],
       "razones": [
-        0.8753992696626521,
-        0.7885213404443467,
-        1.0448510471717205
+        1.4330429302864194,
+        1.4388497870653827,
+        1.3292784723326725
       ],
-      "pendiente_medida": -0.17571820575112593,
+      "pendiente_medida": 0.4888839536526606,
       "pendiente_esperada": 0.0,
-      "coincide": true
+      "coincide": false
     },
     {
       "clave": "cerrar",
@@ -226,17 +226,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Hash O(1) + borrar de dos AVL O(log n).",
       "tiempos_us": [
-        9.237581000036243,
-        9.077882000042337,
-        10.192361000008532,
-        13.734886000008828
+        18.367999990005046,
+        16.65790000697598,
+        19.0446000196971,
+        23.979099991265684
       ],
       "razones": [
-        0.9827120325122691,
-        1.1227686149655831,
-        1.3475666727264988
+        0.9068978667269371,
+        1.1432773645970753,
+        1.2591023159564927
       ],
-      "pendiente_medida": 0.1883834405415213,
+      "pendiente_medida": 0.13469243448340773,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -247,17 +247,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Hash O(1) + insertar en dos AVL O(log n).",
       "tiempos_us": [
-        9.660983999992823,
-        9.142623000002459,
-        10.499691000006806,
-        13.117302000011932
+        16.560500022023916,
+        17.002000007778406,
+        19.321199972182512,
+        24.66110000386834
       ],
       "razones": [
-        0.9463449064825333,
-        1.1484331137797088,
-        1.2493036223640706
+        1.0266598221773096,
+        1.1364074793167318,
+        1.2763751754225354
       ],
-      "pendiente_medida": 0.1523353741283714,
+      "pendiente_medida": 0.19079529876154,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -268,17 +268,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Pila O(1) + revertir el cambio (aquí, un cierre: O(log n)).",
       "tiempos_us": [
-        8.962521000000834,
-        8.788391999985379,
-        10.444497000037245,
-        13.311919000045691
+        18.28030002070591,
+        16.881000017747283,
+        18.15560000250116,
+        23.071999952662736
       ],
       "razones": [
-        0.9805714262744334,
-        1.188442322560785,
-        1.274539022798151
+        0.9234531161209798,
+        1.0755050046450962,
+        1.2707924799777635
       ],
-      "pendiente_medida": 0.1961298070722625,
+      "pendiente_medida": 0.1112574192909539,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -289,17 +289,17 @@
       "que_es_n": "n = estaciones",
       "explicacion": "Pila O(1) + volver a aplicar el cambio.",
       "tiempos_us": [
-        8.4238960000107,
-        8.486562999962644,
-        9.471239000049536,
-        12.326024999993024
+        17.386400024406612,
+        17.113500041887164,
+        18.09020002838224,
+        21.896200021728873
       ],
       "razones": [
-        1.0074391944002945,
-        1.1160276545512273,
-        1.3014163194412638
+        0.9843038247057264,
+        1.057071901370526,
+        1.2103901552981884
       ],
-      "pendiente_medida": 0.1805817052855772,
+      "pendiente_medida": 0.10782373375105289,
       "pendiente_esperada": 0.09786713169962907,
       "coincide": true
     },
@@ -310,17 +310,17 @@
       "que_es_n": "n = pasajeros (= estaciones de la red)",
       "explicacion": "Cada pasajero entra y sale de la cola una sola vez: O(n). Si las llegadas vienen desordenadas se suma Merge Sort, O(n log n).",
       "tiempos_us": [
-        2992.027000004782,
-        6199.579999986327,
-        13763.254000025427,
-        30542.104000005565
+        5472.000048030168,
+        13406.799989752471,
+        24084.399978164583,
+        58933.30002436414
       ],
       "razones": [
-        2.072033440866816,
-        2.2200300665618933,
-        2.2191048715622874
+        2.450073076037107,
+        1.7964316612893134,
+        2.4469490656937394
       ],
-      "pendiente_medida": 1.1205392269820285,
+      "pendiente_medida": 1.1131962770761255,
       "pendiente_esperada": 1.0,
       "coincide": true
     }
