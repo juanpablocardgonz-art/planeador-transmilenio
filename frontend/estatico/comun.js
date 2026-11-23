@@ -171,19 +171,32 @@ function aplicarModoExplicacion(activo) {
 
 // -------------------------------------------------------------- navegación
 const PANELES = ["viajar", "estaciones", "operar", "horapico", "comofunciona"];
-function mostrarPanel(nombre) {
+function mostrarPanel(nombre, desplazar = true) {
   PANELES.forEach((p) => $(`panel-${p}`)?.classList.toggle("activo", p === nombre));
   $$(".nav-boton").forEach((b) => b.classList.toggle("activa", b.dataset.panel === nombre));
-  window.scrollTo(0, 0);
+  document.body.dataset.panel = nombre;
+  if (desplazar) {
+    const destino = $("espacio-trabajo");
+    if (destino) {
+      const y = destino.getBoundingClientRect().top + window.scrollY - 78;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
   if (nombre === "estaciones" && typeof alActivarEstaciones === "function") alActivarEstaciones();
   if (nombre === "operar" && typeof alActivarOperar === "function") alActivarOperar();
   if (nombre === "comofunciona" && typeof alActivarComoFunciona === "function") alActivarComoFunciona();
+  document.dispatchEvent(new CustomEvent("panel-cambiado", { detail: { nombre } }));
   try { localStorage.setItem("panel-actual", nombre); } catch { /* localStorage no disponible */ }
 }
 
 // ------------------------------------------------------------ estado de red
 function pintarEstadoRed(r) {
-  $("estado-red").textContent = `${fmt(r.abiertas)}/${fmt(r.estaciones)} estaciones abiertas · ${fmt(r.rutas)} rutas`;
+  const texto = `${fmt(r.abiertas)}/${fmt(r.estaciones)} estaciones abiertas · ${fmt(r.rutas)} rutas`;
+  $("estado-red").textContent = texto;
+  const heroEstado = $("estado-red-hero");
+  if (heroEstado) heroEstado.textContent = texto;
   document.dispatchEvent(new CustomEvent("red-actualizada", { detail: r }));
 }
 
@@ -227,5 +240,5 @@ async function inicioComun() {
 
   let inicial = "viajar";
   try { inicial = localStorage.getItem("panel-actual") || "viajar"; } catch { /* localStorage no disponible */ }
-  mostrarPanel(PANELES.includes(inicial) ? inicial : "viajar");
+  mostrarPanel(PANELES.includes(inicial) ? inicial : "viajar", false);
 }

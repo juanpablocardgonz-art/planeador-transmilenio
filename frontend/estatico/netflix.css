@@ -1,0 +1,491 @@
+/* ============================================================================
+   frontend/estatico/netflix.css — Capa Cinemática y Estilo Netflix
+   ----------------------------------------------------------------------------
+   Inmersión total: fondo oscuro premium (#0b0b0e), gradientes dinámicos por scroll,
+   banner hero gigante con mosaico inclinado 3D ("Billboard"), carruseles horizontales
+   con tarjetas póster, efectos de ondas (ripple), brillo magnético y transiciones
+   suaves entre secciones. 100% presentación.
+   ========================================================================= */
+
+:root {
+  --net-negro: #0b0b0e;
+  --net-superficie: rgba(24, 24, 27, 0.85);
+  --net-superficie-solida: #18181b;
+  --net-borde: rgba(255, 255, 255, 0.12);
+  --net-borde-hover: rgba(255, 255, 255, 0.35);
+  --net-rojo: #e50914;
+  --net-rojo-brillo: #ff1e2a;
+  --net-rojo-suave: rgba(229, 9, 20, 0.18);
+  --net-texto: #f4f4f5;
+  --net-tenue: #a1a1aa;
+  --net-sombra: 0 16px 48px rgba(0, 0, 0, 0.75);
+}
+
+/* ---------------------------------------------------- Fondo Dinámico Escenarios */
+#escena-fondo {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+  background: var(--net-negro);
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.capa-gradiente {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% -20%, rgba(229, 9, 20, 0.22), transparent 60%),
+              radial-gradient(circle at 10% 80%, rgba(37, 99, 235, 0.12), transparent 50%),
+              radial-gradient(circle at 90% 90%, rgba(147, 51, 234, 0.1), transparent 50%);
+  transition: transform 0.6s ease;
+  transform: translateY(calc(var(--scroll-y, 0px) * 0.12));
+}
+
+.orb-dinamico {
+  position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35;
+  animation: flotarOrb 18s ease-in-out infinite alternate;
+}
+.orb-1 { width: 550px; height: 550px; background: rgba(229, 9, 20, 0.25); top: -100px; left: -100px; }
+.orb-2 { width: 450px; height: 450px; background: rgba(37, 99, 235, 0.2); bottom: 10%; right: -80px; animation-delay: -5s; }
+.orb-3 { width: 400px; height: 400px; background: rgba(162, 28, 175, 0.18); top: 40%; left: 30%; animation-delay: -10s; }
+
+@keyframes flotarOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -50px) scale(1.12); }
+  100% { transform: translate(-30px, 40px) scale(0.92); }
+}
+
+.rejilla-parallax {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 30%, black 20%, transparent 80%);
+}
+
+.trazo-troncal {
+  position: absolute; width: 3px; background: linear-gradient(to bottom, transparent, var(--net-rojo), transparent);
+  opacity: 0.4; filter: blur(1px);
+}
+.trazo-1 { left: 15%; top: 0; height: 100%; animation: pulsoTrazo 6s ease-in-out infinite; }
+.trazo-2 { right: 18%; top: 0; height: 100%; animation: pulsoTrazo 8s ease-in-out infinite -3s; }
+
+@keyframes pulsoTrazo {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.95); }
+  50% { opacity: 0.6; transform: scaleY(1.05); }
+}
+
+.viñeta-global {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(11, 11, 14, 0.92) 90%);
+}
+
+/* Barra superior progreso scroll tipo streaming */
+#progreso-scroll {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
+  background: linear-gradient(90deg, #b91c1c, var(--net-rojo), #ff4d63);
+  transform-origin: left; transform: scaleX(0); will-change: transform;
+}
+
+/* ---------------------------------------------------- Cabecera Netflix */
+.barra {
+  background: rgba(11, 11, 14, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--net-borde) !important;
+  transition: background 0.3s, border-color 0.3s;
+}
+.barra.scrolled {
+  background: rgba(11, 11, 14, 0.95) !important;
+  border-bottom-color: rgba(229, 9, 20, 0.3) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+.marca { cursor: pointer; user-select: none; }
+.marca h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--net-rojo); margin: 0; line-height: 1; }
+.marca .sub { font-size: 11.5px; color: var(--net-tenue); letter-spacing: 0.5px; }
+.logo { background: var(--net-rojo) !important; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; }
+
+.pildora-estado {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--net-borde); border-radius: 999px;
+  font-size: 12px; color: var(--net-tenue);
+}
+.pulso-vivo {
+  width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: pulsoVerde 2s infinite;
+}
+@keyframes pulsoVerde {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* ---------------------------------------------------- Hero Netflix (Billboard) */
+.hero-netflix {
+  position: relative; min-height: 88vh; display: grid; place-items: center;
+  padding: 80px 24px 60px; overflow: hidden; text-align: center;
+}
+
+.mosaico-contenedor {
+  position: absolute; inset: -50px; z-index: 0; pointer-events: none; opacity: 0.28;
+  perspective: 1200px; transform: rotate(-8deg) scale(1.15);
+}
+.netflix-mosaico {
+  display: grid; grid-template-columns: repeat(6, minmax(180px, 1fr)); gap: 16px;
+  animation: desplazarMosaico 45s linear infinite;
+}
+@keyframes desplazarMosaico {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.mosaico-poster {
+  position: relative; height: 260px; border-radius: 12px; overflow: hidden;
+  background: linear-gradient(135deg, var(--p1), var(--p2));
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 14px;
+  animation: fadeInPoster 1.2s ease var(--delay, 0s) both;
+}
+.mosaico-poster .mosaico-ruta {
+  font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; color: #fff;
+  line-height: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+.mosaico-poster .mosaico-zona { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
+.mosaico-poster strong { font-size: 14px; color: #fff; display: block; }
+.mosaico-brillo {
+  position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85));
+}
+
+.mosaico-vigneta {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(11,11,14,0.4) 10%, rgba(11,11,14,0.92) 85%);
+}
+
+.hero-contenido {
+  position: relative; z-index: 2; max-width: 820px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+
+.hero-etiqueta {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px;
+  background: rgba(229, 9, 20, 0.15); border: 1px solid rgba(229, 9, 20, 0.4); border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; color: #fff; letter-spacing: 0.5px;
+}
+.badge-tm {
+  background: var(--net-rojo); color: #fff; padding: 2px 7px; border-radius: 4px; font-family: 'Bebas Neue', sans-serif;
+}
+
+.hero-titulo {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 7vw, 76px);
+  line-height: 0.95; letter-spacing: 1.5px; color: #fff; margin: 0;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.9);
+}
+
+.hero-subtitulo {
+  font-size: clamp(15px, 2vw, 18px); color: var(--net-tenue); max-width: 680px; margin: 0;
+  line-height: 1.5;
+}
+
+/* Buscador Hero tipo Netflix */
+.hero-buscador {
+  display: flex; gap: 10px; width: 100%; max-width: 680px; margin-top: 10px;
+  background: rgba(24, 24, 27, 0.9); padding: 8px; border-radius: 14px;
+  border: 1px solid var(--net-borde); box-shadow: var(--net-sombra);
+  backdrop-filter: blur(12px);
+}
+.hero-input-grupo { flex: 1; text-align: left; padding: 4px 10px; }
+.hero-input-grupo label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--net-tenue); margin-bottom: 2px; }
+.hero-input-grupo input {
+  background: transparent; border: 0; color: #fff; font-size: 15px; width: 100%; padding: 4px 0; outline: none !important;
+}
+.hero-input-grupo input::placeholder { color: rgba(255,255,255,0.3); }
+
+.btn-cta-netflix {
+  background: var(--net-rojo); color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  letter-spacing: 1px; padding: 0 28px; border-radius: 10px; border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.4);
+}
+.btn-cta-netflix:hover { background: var(--net-rojo-brillo); transform: translateY(-2px); }
+.btn-cta-netflix svg { width: 22px; height: 22px; }
+
+.hero-acciones {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px;
+}
+
+.btn-accion-hero {
+  padding: 10px 18px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease;
+}
+.btn-brillo-borde {
+  background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+}
+.btn-brillo-borde:hover { background: rgba(255,255,255,0.18); border-color: #fff; transform: translateY(-2px); }
+
+.btn-cristal {
+  background: rgba(24, 24, 27, 0.6); color: var(--net-tenue); border: 1px solid var(--net-borde);
+  backdrop-filter: blur(8px);
+}
+.btn-cristal:hover { color: #fff; border-color: var(--net-borde-hover); background: rgba(39, 39, 42, 0.8); transform: translateY(-2px); }
+
+.scroll-cue {
+  background: none; border: 0; color: var(--net-tenue); display: flex; flex-direction: column;
+  align-items: center; gap: 4px; margin-top: 24px; cursor: pointer; opacity: 0.7;
+  animation: reboteCue 2s infinite ease-in-out;
+}
+.scroll-cue:hover { opacity: 1; color: #fff; }
+.scroll-cue svg { width: 20px; height: 20px; }
+@keyframes reboteCue {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+
+.arco-netflix {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 120px; pointer-events: none;
+  background: linear-gradient(to top, var(--net-negro), transparent);
+}
+
+/* ---------------------------------------------------- Carruseles Netflix */
+.seccion-carruseles {
+  position: relative; z-index: 2; max-width: 1400px; margin: -40px auto 40px; padding: 0 24px;
+}
+
+.fila-netflix { margin-bottom: 40px; }
+.fila-cabecera {
+  display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px;
+}
+.kicker-rojo {
+  font-size: 11.5px; font-weight: 800; color: var(--net-rojo); text-transform: uppercase;
+  letter-spacing: 1.5px; display: block; margin-bottom: 2px;
+}
+.fila-cabecera h3 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: #fff; margin: 0;
+}
+
+.carrusel-controles { display: flex; gap: 6px; }
+.btn-carrusel {
+  width: 36px; height: 36px; border-radius: 50%; background: rgba(24, 24, 27, 0.8);
+  border: 1px solid var(--net-borde); color: #fff; font-size: 20px; line-height: 1;
+  display: grid; place-items: center; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+}
+.btn-carrusel:hover { background: var(--net-rojo); border-color: var(--net-rojo); }
+
+.carrusel-pista {
+  display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth;
+  padding: 10px 4px 20px; scrollbar-width: none;
+}
+.carrusel-pista::-webkit-scrollbar { display: none; }
+
+.tarjeta-poster {
+  flex: 0 0 260px; height: 160px; border-radius: 12px; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--c1, #27272a), var(--c2, #18181b));
+  border: 1px solid var(--net-borde); cursor: pointer; text-align: left; padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s;
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+.tarjeta-poster:hover {
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(-6px) scale(1.03);
+  border-color: var(--net-rojo);
+  box-shadow: 0 20px 40px rgba(229, 9, 20, 0.35);
+  z-index: 5;
+}
+
+/* Tarjeta Top 1..6 */
+.tarjeta-top { flex: 0 0 280px; height: 165px; display: flex; flex-direction: column; justify-content: space-between; }
+.top-numero {
+  position: absolute; right: 12px; bottom: 8px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; line-height: 1; color: rgba(255,255,255,0.08); pointer-events: none;
+}
+.top-cabecera { display: flex; justify-content: space-between; align-items: center; }
+.top-badge {
+  background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); padding: 2px 8px;
+  border-radius: 6px; font-size: 10.5px; font-weight: 700; color: #fff; letter-spacing: 0.5px;
+}
+.top-play {
+  font-size: 11.5px; font-weight: 700; color: #fff; background: var(--net-rojo); padding: 3px 10px;
+  border-radius: 999px; opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s;
+}
+.tarjeta-top:hover .top-play { opacity: 1; transform: translateY(0); }
+.top-cuerpo .top-zona { font-size: 11px; color: var(--net-tenue); text-transform: uppercase; display: block; }
+.top-cuerpo .top-titulo { font-size: 15px; font-weight: 700; color: #fff; display: block; }
+.top-cuerpo .top-flecha { font-size: 11px; color: var(--net-tenue); margin: 2px 0; display: block; }
+
+/* Tarjeta Portal Destacado */
+.tarjeta-portal {
+  flex: 0 0 240px; height: 140px; display: flex; flex-direction: column; justify-content: space-between;
+  background: linear-gradient(145deg, rgba(24,24,27,0.95), rgba(9,9,11,0.95));
+  border-left: 4px solid var(--acento-card, var(--net-rojo));
+}
+.portal-icono { font-size: 26px; }
+.portal-texto strong { font-size: 16px; color: #fff; display: block; }
+.portal-texto span { font-size: 12px; color: var(--net-tenue); display: block; margin-top: 2px; }
+.portal-ir { font-size: 12px; font-weight: 700; color: var(--net-rojo); }
+
+/* ---------------------------------------------------- Navegación de Escritorio y Paneles */
+.nav-superior {
+  background: rgba(11, 11, 14, 0.92) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--net-borde) !important;
+}
+.nav-boton { color: var(--net-tenue) !important; }
+.nav-boton:hover { color: #fff !important; }
+.nav-boton.activa { color: #fff !important; border-bottom-color: var(--net-rojo) !important; }
+
+main { max-width: 1120px; margin: 0 auto; padding: 32px 24px 60px; }
+
+/* Tarjetas y Paneles estilo Netflix Glassmorphism */
+.tarjeta, .ficha-estacion, .diagrama-contenedor, .ficha-parada, .controles-simulador, .grafica-fila, .escena-anden, .tarjeta-vidrio {
+  background: var(--net-superficie) !important;
+  border: 1px solid var(--net-borde) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--net-sombra) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--net-texto) !important;
+}
+
+input, select {
+  background: rgba(11, 11, 14, 0.85) !important;
+  border: 1px solid var(--net-borde) !important;
+  color: var(--net-texto) !important;
+  border-radius: 10px !important;
+}
+input:focus-visible, select:focus-visible {
+  border-color: var(--net-rojo) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--net-rojo-suave);
+}
+
+button {
+  border-radius: 10px !important;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s;
+}
+button.boton-primario {
+  background: var(--net-rojo) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(229, 9, 20, 0.35);
+}
+button.boton-primario:hover {
+  background: var(--net-rojo-brillo) !important;
+  transform: translateY(-1px);
+}
+
+.autocompletar-lista {
+  background: rgba(24, 24, 27, 0.96) !important;
+  border: 1px solid var(--net-borde) !important;
+  backdrop-filter: blur(16px);
+}
+.autocompletar-lista li:hover, .autocompletar-lista li.activa {
+  background: rgba(229, 9, 20, 0.25) !important;
+  color: #fff;
+}
+
+/* ---------------------------------------------------- Bandas Escenas Inmersivas */
+.seccion-experiencia {
+  max-width: 1120px; margin: 40px auto 80px; padding: 0 24px;
+  display: grid; gap: 40px;
+}
+
+.banda-escena {
+  background: var(--net-superficie); border: 1px solid var(--net-borde); border-radius: 20px;
+  padding: 40px; box-shadow: var(--net-sombra); backdrop-filter: blur(16px);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+  opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.banda-escena.revelado { opacity: 1; transform: translateY(0); }
+.banda-escena.invertida { direction: rtl; }
+.banda-escena.invertida > * { direction: ltr; }
+
+.banda-texto h2 { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 1px; color: #fff; margin: 6px 0 12px; }
+.banda-texto p { color: var(--net-tenue); font-size: 15px; line-height: 1.6; margin: 0 0 20px; }
+.banda-botones { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-borde-animado {
+  background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3);
+}
+.btn-borde-animado:hover { border-color: var(--net-rojo); background: var(--net-rojo-suave); }
+
+/* Ilustraciones visuales en bandas */
+.banda-visual {
+  height: 220px; border-radius: 14px; background: rgba(11, 11, 14, 0.6);
+  border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center;
+  gap: 16px; padding: 20px; position: relative; overflow: hidden;
+}
+.visual-operar { display: flex; align-items: center; gap: 10px; }
+.nodo-sim {
+  padding: 10px 16px; background: rgba(24, 24, 27, 0.9); border: 1px solid var(--net-borde);
+  border-radius: 10px; font-size: 12px; font-weight: 700; color: #fff;
+}
+.nodo-sim.activo { background: var(--net-rojo); border-color: var(--net-rojo); box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+.linea-sim { height: 2px; flex: 1; background: var(--net-borde); }
+
+.visual-pico { display: flex; align-items: flex-end; gap: 12px; height: 140px; }
+.barra-anim {
+  width: 24px; border-radius: 6px 6px 0 0; background: var(--net-rojo);
+  animation: crecerBarra 3s ease-in-out infinite alternate;
+}
+.b1 { height: 40%; animation-delay: 0s; }
+.b2 { height: 85%; animation-delay: 0.4s; background: #2563eb; }
+.b3 { height: 65%; animation-delay: 0.8s; }
+.b4 { height: 95%; animation-delay: 1.2s; background: #eab308; }
+.b5 { height: 50%; animation-delay: 1.6s; }
+@keyframes crecerBarra {
+  0% { transform: scaleY(0.7); }
+  100% { transform: scaleY(1.15); }
+}
+
+.visual-motor { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 260px; }
+.visual-motor code {
+  background: rgba(229, 9, 20, 0.15); border: 1px solid rgba(229, 9, 20, 0.3);
+  color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  text-align: center;
+}
+
+/* HUD Flotante inferior */
+.hud-flotante {
+  position: fixed; bottom: 24px; right: 24px; z-index: 50;
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.hud-flotante.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.hud-escena-pill {
+  background: rgba(24, 24, 27, 0.9); border: 1px solid var(--net-borde); color: #fff;
+  padding: 8px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  backdrop-filter: blur(12px); box-shadow: var(--net-sombra);
+}
+
+.btn-arriba {
+  width: 42px; height: 42px; border-radius: 50%; background: var(--net-rojo); color: #fff;
+  border: 0; display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(229, 9, 20, 0.5); transition: transform 0.2s, background 0.2s;
+}
+.btn-arriba:hover { background: var(--net-rojo-brillo); transform: translateY(-3px); }
+.btn-arriba svg { width: 20px; height: 20px; }
+
+/* Efecto Ripple (onda al hacer clic) */
+button, .tarjeta-poster, .marca { position: relative; overflow: hidden; }
+.ripple-onda {
+  position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.35);
+  transform: scale(0); animation: animarRipple 0.6s linear forwards; pointer-events: none;
+}
+@keyframes animarRipple {
+  to { transform: scale(2.5); opacity: 0; }
+}
+
+/* Giro 3D botón cambiar */
+@keyframes giro3D {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.25); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+.girando { animation: giro3D 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Responsive móvil */
+@media (max-width: 900px) {
+  .banda-escena { grid-template-columns: 1fr; padding: 24px; }
+  .banda-escena.invertida { direction: ltr; }
+  .netflix-mosaico { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
+}
