@@ -4,10 +4,10 @@
 # PILA (LIFO) y COLA (FIFO) implementadas sobre arreglos (list).
 #
 #   PILA  (Last In, First Out)  -> R9 deshacer / rehacer.
-#         push ->  [ a, b, c ]  <- pop     (entra y sale por el mismo extremo)
+#         push ->  [ a, b, c ]  <- pop  (entra y sale por el mismo extremo)
 #
 #   COLA  (First In, First Out) -> R10 fila de abordaje.
-#         encolar -> [ a, b, c ] -> desencolar   (entra por atrás, sale por delante)
+#         encolar -> [ a, b, c ] -> desencolar (entra por atrás, sale por delante)
 # =============================================================================
 
 
@@ -89,7 +89,7 @@ class Cola:
             raise IndexError("frente de una cola vacía")
         return self._datos[self._frente]
 
-    def vacia(self):
+    def vacia(self): // Si se hace un nuevo arreglo, la pila se vacia hasta un nuevo cambio
         return self._frente == len(self._datos)
 
     def __len__(self):
